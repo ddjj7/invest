@@ -4,6 +4,5 @@ encoding//govInvest/middlewares.py=utf-8
 encoding//govInvest/pipelines.py=utf-8
 encoding//govInvest/run.py=utf-8
 encoding//govInvest/settings.py=utf-8
-encoding//govInvest/spiders/invest-bak.py=utf-8
 encoding//govInvest/spiders/invest.py=utf-8
 encoding//govInvest/spiders/invest2.py=utf-8
