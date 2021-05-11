@@ -10,6 +10,7 @@ import datetime
   
 count = 0
 
+#江苏
 class Invest2Spider(scrapy.Spider):
     name = 'invest2'
     #allowed_domains = ['222.190.131.17:8075']
@@ -28,9 +29,8 @@ class Invest2Spider(scrapy.Spider):
             item = Govinvest2Item()
             dict = {}
             date = each.xpath("./td[7]/text()").extract()[0]
-            currentDate = date
             time.sleep(0.3) 
-            if datetime.datetime.strptime(currentDate, "%Y/%m/%d") < datetime.datetime.strptime('2021/04/01', "%Y/%m/%d"):
+            if datetime.datetime.strptime(date, "%Y/%m/%d") < datetime.datetime.strptime('2021/05/01', "%Y/%m/%d"):
                 break 
             #do sth. here
             title = each.xpath("./td[1]/@title").extract()[0]
@@ -38,18 +38,20 @@ class Invest2Spider(scrapy.Spider):
             department = each.xpath("./td[3]/text()").extract()[0]
             district = each.xpath("./td[4]/text()").extract()[0]
             result = each.xpath("./td[5]/text()").extract()[0]
+            if result !=u'批复':
+                continue
             resultno = each.xpath("./td[6]/text()").extract()
             if len(resultno)>0:
                 resultno = resultno[0]
             else:
                 resultno = 'null'
-            dict[u'项目名称'] = title
-            dict[u'审批事项'] = matter
-            dict[u'审批部门'] = department
-            dict[u'部门区划'] = district
-            dict[u'审批结果'] = result
-            dict[u'批复文号'] = resultno
-            dict[u'审批时间'] = date
+            dict[u'项目名称'] = title    #项目名称
+            dict[u'审批事项'] = matter   #审批事项
+            dict[u'审批部门'] = department   #审批部门
+            dict[u'部门区划'] = district    #部门区划
+            dict[u'审批结果'] = result    #审批结果
+            dict[u'批复文号'] = resultno   #批复文号
+            dict[u'审批时间'] = date    #审批时间
             item['dic']=dict
             yield item
             

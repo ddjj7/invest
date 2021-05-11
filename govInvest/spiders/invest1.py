@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import scrapy
-from govInvest.items import GovinvestItem
+from govInvest.items import Govinvest1Item
       
 #import sys
 import time
@@ -9,13 +9,14 @@ import datetime
 # sys.setdefaultencoding("utf-8")
    
 count = 0
-   
-class ItnvestSpider(scrapy.Spider):
-    name = 'invest'
+  
+#安徽 
+class Itnvest1Spider(scrapy.Spider):
+    name = 'invest1'
     allowed_domains = ['tzxm.ahzwfw.gov.cn']
     start_urls = ['http://tzxm.ahzwfw.gov.cn/portalopenPublicInformation.do?method=queryExamineAll']
     custom_settings = {
-        'ITEM_PIPELINES': {'govInvest.pipelines.GovinvestPipeline': 300},
+        'ITEM_PIPELINES': {'govInvest.pipelines.Govinvest1Pipeline': 300},
     }
               
     def parse(self, response):
@@ -23,15 +24,17 @@ class ItnvestSpider(scrapy.Spider):
         currentDate = ''
         print ('$$$$$$$$$$$$$$$$$$'+str(count)+'$$$$$$$$$$$$$$$$$$')
         for each in response.xpath("//*[@id='publicInformationForm']/tr"):
-            date = each.xpath("./td[5]/text()").extract()
-            rawlink = each.xpath("./td[1]/a[1]/@onclick").extract()
-            link = rawlink[0].replace('window.open(\'','http://tzxm.ahzwfw.gov.cn')
+            date = each.xpath("./td[5]/text()").extract()[0]
+            result = each.xpath("./td[4]/text()").extract()[0]
+            rawlink = each.xpath("./td[1]/a[1]/@onclick").extract()[0]
+            link = rawlink.replace('window.open(\'','http://tzxm.ahzwfw.gov.cn')
             index = len(link)
             link = link[0:index-2]
-            currentDate = date[0]
             time.sleep(0.3) 
-            if datetime.datetime.strptime(currentDate, "%Y/%m/%d") < datetime.datetime.strptime('2021/04/01', "%Y/%m/%d"):
+            if datetime.datetime.strptime(date, "%Y/%m/%d") < datetime.datetime.strptime('2021/05/01', "%Y/%m/%d"):
                 break 
+            if result !=u'批复':
+                continue
             yield scrapy.Request(link, callback=self.get_detail)
          
         count +=1     
@@ -44,7 +47,7 @@ class ItnvestSpider(scrapy.Spider):
             yield scrapy.FormRequest(nextUrl, formdata = {'pageNo':str(count)}, callback=self.parse)
              
     def get_detail(self,response):
-        item = GovinvestItem()
+        item = Govinvest1Item()
         dict = {}
          
         #//*[@id="tab00"]/div[1]/table/tbody/tr[1]/td[1]

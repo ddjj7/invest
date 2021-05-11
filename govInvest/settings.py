@@ -67,8 +67,9 @@ ROBOTSTXT_OBEY = True
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-    'govInvest.pipelines.GovinvestPipeline': 300,
+    'govInvest.pipelines.Govinvest1Pipeline': 300,
     'govInvest.pipelines.Govinvest2Pipeline': 300,
+    'govInvest.pipelines.Govinvest3Pipeline': 300,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)

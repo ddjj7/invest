@@ -11,7 +11,7 @@ from scrapy.crawler import CrawlerProcess
 if __name__ == '__main__':
     setting = get_project_settings()
     process = CrawlerProcess(setting)
-    didntWorkSpider = ['invest0']
+    didntWorkSpider = ['invest4','invest5']
 
     for spider_name in process.spiders.list():
         if spider_name in didntWorkSpider :
