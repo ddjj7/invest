@@ -27,7 +27,7 @@ class Govinvest1Pipeline(object):
         packet['dateItem']='审批时间'
         packet['idItem']='项目代码'
         # send to java server
-        #posturl = 'http://cdp-stg2.paic.com.cn/cdp-mcrsrv-admin/collect/saveCollectInfo'
+        #posturl = 'http://10.47.123.120:6666/cdp-mcrsrv-admin/collect/saveCollectInfo'
         posturl = 'http://127.0.0.1:9090/api/recvScrapy1/'
         headers = {'Content-Type': 'application/json'}
         data = json.dumps(packet)
@@ -53,7 +53,7 @@ class Govinvest2Pipeline(object):
         packet['dateItem']='审批时间'
         packet['idItem']='批复文号'
         # send to java server
-        #posturl = 'http://cdp-stg2.paic.com.cn/cdp-mcrsrv-admin/collect/saveCollectInfo'
+        #posturl = 'http://10.47.123.120:6666/cdp-mcrsrv-admin/collect/saveCollectInfo'
         posturl = 'http://127.0.0.1:9090/api/recvScrapy1/'
         headers = {'Content-Type': 'application/json'}
         data = json.dumps(packet)
@@ -79,7 +79,7 @@ class Govinvest3Pipeline(object):
         packet['dateItem']='申报时间'
         packet['idItem']='项目代码'
         # send to java server
-        #posturl = 'http://cdp-stg2.paic.com.cn/cdp-mcrsrv-admin/collect/saveCollectInfo'
+        #posturl = 'http://10.47.123.120:6666/cdp-mcrsrv-admin/collect/saveCollectInfo'
         posturl = 'http://127.0.0.1:9090/api/recvScrapy1/'
         headers = {'Content-Type': 'application/json'}
         data = json.dumps(packet)
