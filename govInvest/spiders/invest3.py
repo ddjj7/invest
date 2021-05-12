@@ -4,9 +4,11 @@ from govInvest.items import Govinvest3Item
 
 #import sys
 import time
-import datetime
+from datetime import timedelta, datetime
 import requests 
 import json
+
+import govInvest.commonTools as tool
 # reload(sys)
 # sys.setdefaultencoding("utf-8")
   
@@ -23,8 +25,8 @@ class Invest3Spider(scrapy.Spider):
 
     def parse(self, response):
         global count
+        endFlag='0'
         posturl = 'http://221.214.94.51:8081/icity/api-v2/app.icity.ipro.IproCmd/getProjectList'
-        currentDate = ''
         t = time.time()
         print ('$$$$$$$$$$$$$$$$$$'+str(count)+'$$$$$$$$$$$$$$$$$$')
         #yield scrapy.FormRequest(nextUrl, formdata = {'pageNo':'2'}, callback=self.parse)
@@ -44,8 +46,18 @@ class Invest3Spider(scrapy.Spider):
             item = Govinvest3Item()
             dict = {}
             applyDate = each['APPLY_DATE']
-            if datetime.datetime.strptime(applyDate, "%Y-%m-%d") < datetime.datetime.strptime('2021-05-01', "%Y-%m-%d"):
-                break 
+            recordDate = datetime.strptime(applyDate, "%Y-%m-%d")
+            currDate = datetime.strptime(datetime.now().strftime("%Y-%m-%d"), "%Y-%m-%d")
+            #print(currDate)
+            yesterday = datetime.strptime((datetime.today()+ timedelta(-1)).strftime("%Y-%m-%d"), "%Y-%m-%d")
+            #print(yesterday)
+            if currDate == recordDate:
+                print('currDate == recordDate')
+                continue 
+            if yesterday > recordDate:
+                endFlag='1'
+                print('yesterday > recordDate')
+                continue 
             
             projectCode = each['PROJECT_CODE']
             projectName = each['PROJECT_NAME']
@@ -73,7 +85,7 @@ class Invest3Spider(scrapy.Spider):
             yield item
             
         count +=1     
-        if count <3:
+        if endFlag=='0':
             print ('go next page ------------------------------'+str(count))
             time.sleep(5) 
             startUrl = 'http://221.214.94.51:8081/icity/ipro/projectlist'  #没用

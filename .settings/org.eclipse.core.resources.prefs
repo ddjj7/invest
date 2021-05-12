@@ -1,4 +1,5 @@
 eclipse.preferences.version=1
+encoding//govInvest/commonTools.py=utf-8
 encoding//govInvest/items.py=utf-8
 encoding//govInvest/middlewares.py=utf-8
 encoding//govInvest/pipelines.py=utf-8

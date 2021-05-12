@@ -4,7 +4,9 @@ from govInvest.items import Govinvest2Item
 
 #import sys
 import time
-import datetime
+from datetime import timedelta, datetime
+
+import govInvest.commonTools as tool
 # reload(sys)
 # sys.setdefaultencoding("utf-8")
   
@@ -21,7 +23,7 @@ class Invest2Spider(scrapy.Spider):
 
     def parse(self, response):
         global count
-        currentDate = ''
+        endFlag='0'
         nextUrl = 'http://222.190.131.17:8075/portalopenPublicInformation.do?method=queryExamineAll'
         print ('$$$$$$$$$$$$$$$$$$'+str(count)+'$$$$$$$$$$$$$$$$$$')
         #yield scrapy.FormRequest(nextUrl, formdata = {'pageNo':'2'}, callback=self.parse)
@@ -30,21 +32,31 @@ class Invest2Spider(scrapy.Spider):
             dict = {}
             date = each.xpath("./td[7]/text()").extract()[0]
             time.sleep(0.3) 
-            if datetime.datetime.strptime(date, "%Y/%m/%d") < datetime.datetime.strptime('2021/05/01', "%Y/%m/%d"):
-                break 
+            recordDate = datetime.strptime(date, "%Y/%m/%d")
+            currDate = datetime.strptime(datetime.now().strftime("%Y-%m-%d"), "%Y-%m-%d")
+            #print(currDate)
+            yesterday = datetime.strptime((datetime.today()+ timedelta(-1)).strftime("%Y-%m-%d"), "%Y-%m-%d")
+            #print(yesterday)
+            if currDate == recordDate:
+                print('currDate == recordDate')
+                continue 
+            if yesterday > recordDate:
+                endFlag='1'
+                print('yesterday > recordDate')
+                continue 
             #do sth. here
-            title = each.xpath("./td[1]/@title").extract()[0]
-            matter = each.xpath("./td[2]/text()").extract()[0]
-            department = each.xpath("./td[3]/text()").extract()[0]
-            district = each.xpath("./td[4]/text()").extract()[0]
-            result = each.xpath("./td[5]/text()").extract()[0]
+            title = tool.returnNotNull(each.xpath("./td[1]/@title").extract())
+            matter = tool.returnNotNull(each.xpath("./td[2]/text()").extract())
+            department = tool.returnNotNull(each.xpath("./td[3]/text()").extract())
+            district = tool.returnNotNull(each.xpath("./td[4]/text()").extract())
+            result = tool.returnNotNull(each.xpath("./td[5]/text()").extract())
             if result !=u'批复':
                 continue
-            resultno = each.xpath("./td[6]/text()").extract()
-            if len(resultno)>0:
-                resultno = resultno[0]
-            else:
-                resultno = 'null'
+            resultno = tool.returnNotNull(each.xpath("./td[6]/text()").extract())
+#             if len(resultno)>0:
+#                 resultno = resultno[0]
+#             else:
+#                 resultno = 'null'
             dict[u'项目名称'] = title    #项目名称
             dict[u'审批事项'] = matter   #审批事项
             dict[u'审批部门'] = department   #审批部门
@@ -56,7 +68,7 @@ class Invest2Spider(scrapy.Spider):
             yield item
             
         count +=1     
-        if count <3:
+        if endFlag=='0':
             print ('go next page ------------------------------'+str(count))
             yield scrapy.FormRequest(nextUrl, formdata = {'pageNo':str(count)}, callback=self.parse)
             
