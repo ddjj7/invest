@@ -12,9 +12,10 @@ if __name__ == '__main__':
     setting = get_project_settings()
     process = CrawlerProcess(setting)
     didntWorkSpider = ['invest1','invest2']
+    runlist = ['investMiit']
 
     for spider_name in process.spiders.list():
-        if spider_name in didntWorkSpider :
+        if spider_name not in runlist :
             continue
         print("Running spider %s" % (spider_name))
         process.crawl(spider_name)

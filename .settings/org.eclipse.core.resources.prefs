@@ -1,5 +1,6 @@
 eclipse.preferences.version=1
 encoding//govInvest/commonTools.py=utf-8
+encoding//govInvest/cookieTools.py=utf-8
 encoding//govInvest/items.py=utf-8
 encoding//govInvest/middlewares.py=utf-8
 encoding//govInvest/pipelines.py=utf-8
@@ -8,3 +9,8 @@ encoding//govInvest/settings.py=utf-8
 encoding//govInvest/spiders/invest1.py=utf-8
 encoding//govInvest/spiders/invest2.py=utf-8
 encoding//govInvest/spiders/invest3.py=utf-8
+encoding//govInvest/spiders/investCac.py=utf-8
+encoding//govInvest/spiders/investCbirc.py=utf-8
+encoding//govInvest/spiders/investMiit.py=utf-8
+encoding//govInvest/spiders/investMps.py=utf-8
+encoding//govInvest/spiders/testPacket/testJs2.py=utf-8

@@ -2,16 +2,11 @@
 import scrapy
 from govInvest.items import Govinvest3Item
 
-#import sys
 import time
 from datetime import timedelta, datetime
 import requests 
 import json
 
-import govInvest.commonTools as tool
-# reload(sys)
-# sys.setdefaultencoding("utf-8")
-  
 count = 1
 
 #山东
@@ -72,6 +67,12 @@ class Invest3Spider(scrapy.Spider):
             
             seqId = each['SEQ_ID']
             projectType = each['PROJECT_TYPE']
+            if projectType == 'A00001':
+                projectType = u'审批类项目'
+            elif projectType == 'A00002':
+                projectType = u'核准类项目'
+            elif projectType == 'A00003':
+                projectType= u'备案类项目'
             
             dict[u'项目代码'] = projectCode   #项目代码
             dict[u'项目名称'] = projectName   #项目名称
@@ -85,7 +86,7 @@ class Invest3Spider(scrapy.Spider):
             yield item
             
         count +=1     
-        if endFlag=='0':
+        if count<200 and endFlag=='0':
             print ('go next page ------------------------------'+str(count))
             time.sleep(5) 
             startUrl = 'http://221.214.94.51:8081/icity/ipro/projectlist'  #没用

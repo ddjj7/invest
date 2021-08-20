@@ -28,5 +28,16 @@ class Govinvest3Item(scrapy.Item):
     dic = scrapy.Field()
     pass
 
+class GovinvestMpsItem(scrapy.Item):
+    dic = scrapy.Field()
+    pass
+
+class GovinvestCacItem(scrapy.Item):
+    dic = scrapy.Field()
+    pass
+
+class GovinvestCbircItem(scrapy.Item):
+    dic = scrapy.Field()
+    pass
 
 
