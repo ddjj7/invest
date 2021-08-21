@@ -70,6 +70,7 @@ ITEM_PIPELINES = {
     'govInvest.pipelines.Govinvest1Pipeline': 300,
     'govInvest.pipelines.Govinvest2Pipeline': 300,
     'govInvest.pipelines.Govinvest3Pipeline': 300,
+    'govInvest.pipelines.BeikeXlsxPipeline': 300,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
@@ -92,3 +93,5 @@ ITEM_PIPELINES = {
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+
+FEED_EXPORTERS = {'excel': 'govInvest.my_exporters.ExcelItemExporter'}

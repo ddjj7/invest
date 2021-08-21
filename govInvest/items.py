@@ -41,3 +41,12 @@ class GovinvestCbircItem(scrapy.Item):
     pass
 
 
+class BeikeItem(scrapy.Item):
+    title = scrapy.Field()
+    link = scrapy.Field()
+    position = scrapy.Field()
+    info = scrapy.Field()
+    tag = scrapy.Field()
+    totalPrice = scrapy.Field()
+    unitPrice = scrapy.Field()
+    pass
