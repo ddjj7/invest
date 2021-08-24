@@ -9,6 +9,7 @@ encoding//govInvest/settings.py=utf-8
 encoding//govInvest/spiders/invest1.py=utf-8
 encoding//govInvest/spiders/invest2.py=utf-8
 encoding//govInvest/spiders/invest3.py=utf-8
+encoding//govInvest/spiders/investBeike.py=utf-8
 encoding//govInvest/spiders/investCac.py=utf-8
 encoding//govInvest/spiders/investCbirc.py=utf-8
 encoding//govInvest/spiders/investMiit.py=utf-8

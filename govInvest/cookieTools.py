@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import requests
 import re
+import io
 import execjs
 import hashlib
 import json
@@ -117,9 +118,32 @@ def getAHHeaderWithCookie(url):
 if __name__ == '__main__':
     headers=getMpsHeaderWithCookie('https://www.miit.gov.cn/zwgk/wjgs/index.html')
     print(headers)
-    res3 = requests.get('https://www.miit.gov.cn/zwgk/wjgs/index.html', headers=headers)
+    param ={}
+    param['websiteid']=110000000000000
+    param['scope']='basic'
+    param['q']=r'个人信息'
+    param['pg']=10
+    param['cateid']=57
+    param['pos']='title_text,infocontent,titlepy'
+    param['_cus_eq_typename']=''
+    param['_cus_eq_publishgroupname']=''
+    param['_cus_eq_themename']=''
+    param['begin']=''
+    param['end']=''
+    param['dateField']='deploytime'
+    param['selectFields']='title,content,deploytime,_index,url,cdate,infoextends,infocontentattribute,columnname,filenumbername,publishgroupname,publishtime,metaid,bexxgk,columnid,xxgkextend1,xxgkextend2,themename,typename,indexcode,createdate'
+    param['group']='distinct'
+    param['highlightConfigs']='[{"field":"infocontent","numberOfFragments":2,"fragmentOffset":0,"fragmentSize":30,"noMatchSize":145}]'
+    param['highlightFields']='title_text,infocontent,webid'
+    param['level']=6
+    param['sortFields']='[{"name":"deploytime","type":"desc"}]'
+    param['p']=2
+    res3 = requests.get('https://www.miit.gov.cn/search-front-server/api/search/info', headers=headers, params=param)
     res3.encoding = 'utf-8'
-    print(res3.text)
+    #print(res3.text)
+    with io.open('./text.txt','a',encoding='utf-8')as f:
+        f.write(res3.text)
+#     ==========================================
 #     headers = getAHHeaderWithCookie('http://tzxm.ahzwfw.gov.cn/portalopenPublicInformation.do?method=queryExamineAll')
 #     print(headers)
 #     r = requests.get('http://tzxm.ahzwfw.gov.cn/portalopenPublicInformation.do?method=queryExamineAll', headers=headers)

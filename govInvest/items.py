@@ -40,6 +40,10 @@ class GovinvestCbircItem(scrapy.Item):
     dic = scrapy.Field()
     pass
 
+class GovinvestMiitItem(scrapy.Item):
+    dic = scrapy.Field()
+    pass
+
 
 class BeikeItem(scrapy.Item):
     title = scrapy.Field()

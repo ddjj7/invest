@@ -35,7 +35,7 @@ class Itnvest1Spider(scrapy.Spider):
         global count
         endFlag='0'
         print ('$$$$$$$$$$$$$$$$$$'+str(count)+'$$$$$$$$$$$$$$$$$$')
-        #print(response.text)
+        print(response.text)
         for each in response.xpath("//*[@id='publicInformationForm']/tr"):
             date = each.xpath("./td[5]/text()").extract()[0]
             result = each.xpath("./td[4]/text()").extract()[0]

@@ -130,6 +130,20 @@ class GovinvestCbircPipeline(object):
         r = requests.post(posturl, data=data, headers=headers)
         return item
     
+class GovinvestMiitPipeline(object):
+
+    def process_item(self, item, spider):
+        dic = item['dic']
+        packet = {}
+        packet['data'] = dic
+        # send to java server
+        #posturl = 'http://10.47.123.120:6666/cdp-mcrsrv-admin/collect/saveCollectInfo'
+        posturl = 'http://127.0.0.1:9090/api/recvScrapy1/'
+        headers = {'Content-Type': 'application/json'}
+        data = json.dumps(packet)
+        r = requests.post(posturl, data=data, headers=headers)
+        return item
+    
 class BeikePipeline(object):
     
     def process_item(self, item, spider):

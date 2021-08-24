@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import scrapy
 from scrapy.http import Request
-from govInvest.items import GovinvestMpsItem
+from govInvest.items import GovinvestMiitItem
       
 import time
 import requests
@@ -26,7 +26,7 @@ class ItnvestMpsSpider(scrapy.Spider):
     start_urls = ['https://www.miit.gov.cn/zwgk/wjgs/index.html',
                   'https://www.miit.gov.cn/zwgk/zcjd/index.html']
     custom_settings = {
-        'ITEM_PIPELINES': {'govInvest.pipelines.GovinvestMpsPipeline': 300},
+        'ITEM_PIPELINES': {'govInvest.pipelines.GovinvestMiitPipeline': 300},
     }
     
     def start_requests(self):
@@ -98,7 +98,7 @@ class ItnvestMpsSpider(scrapy.Spider):
             
              
     def get_detail(self,response,date,title,link):
-        item = GovinvestMpsItem()
+        item = GovinvestMiitItem()
         docDict = {}
         #print(response.text)
         text = ''
