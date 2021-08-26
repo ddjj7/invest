@@ -57,11 +57,11 @@ class ItnvestMpsSpider(scrapy.Spider):
             #print(yesterday)
             if currDate == recordDate:
                 print('currDate == recordDate')
-                continue 
+                #continue 
             if yesterday > recordDate:
                 print('yesterday > recordDate')
                 #endFlag='1'
-                continue 
+                #continue 
             add_params = {}
             add_params['date'] = date
             add_params['title'] = title
@@ -73,7 +73,7 @@ class ItnvestMpsSpider(scrapy.Spider):
         urlPattern = 'https://www.mps.gov.cn/n6557558/index_7574611_{num}.html'
         nextUrl = urlPattern.format(num=self.count)
         print(nextUrl)
-        if self.count<10 and endFlag=='0':
+        if self.count<2 or endFlag=='0':
             #pass
             time.sleep(5)
             yield scrapy.Request(nextUrl, callback=self.parse_second,headers=headers)
@@ -98,7 +98,7 @@ class ItnvestMpsSpider(scrapy.Spider):
         urlPattern = 'https://www.mps.gov.cn/n6557558/index_7574611_{num}.html'
         nextUrl = urlPattern.format(num=self.count)
         print(nextUrl)
-        if self.count<100 and endFlag=='0':
+        if self.count<100 or endFlag=='0':
             #pass
             time.sleep(5)
             yield scrapy.Request(nextUrl, callback=self.parse_second,headers=headers)
@@ -107,18 +107,21 @@ class ItnvestMpsSpider(scrapy.Spider):
         item = GovinvestMpsItem()
         docDict = {}
          
-        text = ''
+        texts = []
         #//*[@id="ztdx"]
+        #print(response.text)
         for each in response.xpath("//*[@id='ztdx']"):
             text = each.xpath("./p").xpath('string(.)').extract()
-            #print(title)
-            print(text)
+            texts.append(text)
         docDict['date'] = date
         docDict['title'] = title
         docDict['link'] = link
-        docDict['text'] = text
+        print(date)
+        print(title)
+        print(texts)
+        docDict['text'] = texts
         item['dic']=docDict
-        time.sleep(5)
+        #time.sleep(5)
         return item
     
     

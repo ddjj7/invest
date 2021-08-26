@@ -44,11 +44,11 @@ class ItnvestMpsSpider(scrapy.Spider):
             print(yesterday)
             if currDate == recordDate:
                 print('currDate == recordDate')
-                continue 
+                #continue 
             if yesterday > recordDate:
                 print('yesterday > recordDate')
                 #endFlag='1'
-                continue 
+                #continue 
             add_params = {}
             add_params['date'] = date
             add_params['title'] = title

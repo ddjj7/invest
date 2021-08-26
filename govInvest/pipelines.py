@@ -94,12 +94,17 @@ class GovinvestMpsPipeline(object):
         dic = item['dic']
         packet = {}
         packet['data'] = dic
+        packet['source'] = r'公安部'
         # send to java server
         #posturl = 'http://10.47.123.120:6666/cdp-mcrsrv-admin/collect/saveCollectInfo'
         posturl = 'http://127.0.0.1:9090/api/recvScrapy1/'
         headers = {'Content-Type': 'application/json'}
         data = json.dumps(packet)
         r = requests.post(posturl, data=data, headers=headers)
+        with io.open('./mps.txt','a',encoding='utf-8')as f:
+            for k,v in dic.items():
+                f.write(k+':'+str(v)+'\n')
+            f.write('==============='+'\n')
         return item
     
 class GovinvestCacPipeline(object):
@@ -108,6 +113,7 @@ class GovinvestCacPipeline(object):
         dic = item['dic']
         packet = {}
         packet['data'] = dic
+        packet['source'] = r'网信办'
         # send to java server
         #posturl = 'http://10.47.123.120:6666/cdp-mcrsrv-admin/collect/saveCollectInfo'
         posturl = 'http://127.0.0.1:9090/api/recvScrapy1/'
@@ -122,12 +128,17 @@ class GovinvestCbircPipeline(object):
         dic = item['dic']
         packet = {}
         packet['data'] = dic
+        packet['source'] = r'银保监会'
         # send to java server
         #posturl = 'http://10.47.123.120:6666/cdp-mcrsrv-admin/collect/saveCollectInfo'
         posturl = 'http://127.0.0.1:9090/api/recvScrapy1/'
         headers = {'Content-Type': 'application/json'}
         data = json.dumps(packet)
         r = requests.post(posturl, data=data, headers=headers)
+        with io.open('./cbirc.txt','a',encoding='utf-8')as f:
+            for k,v in dic.items():
+                f.write(k+':'+str(v)+'\n')
+            f.write('==============='+'\n')
         return item
     
 class GovinvestMiitPipeline(object):
@@ -136,6 +147,7 @@ class GovinvestMiitPipeline(object):
         dic = item['dic']
         packet = {}
         packet['data'] = dic
+        packet['source'] = r'工信部'
         # send to java server
         #posturl = 'http://10.47.123.120:6666/cdp-mcrsrv-admin/collect/saveCollectInfo'
         posturl = 'http://127.0.0.1:9090/api/recvScrapy1/'

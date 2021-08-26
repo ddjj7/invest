@@ -68,7 +68,7 @@ class Invest2Spider(scrapy.Spider):
             yield item
             
         count +=1     
-        if count<200 and endFlag=='0':
+        if count<100 or endFlag=='0':
             print ('go next page ------------------------------'+str(count))
             yield scrapy.FormRequest(nextUrl, formdata = {'pageNo':str(count)}, callback=self.parse)
             
