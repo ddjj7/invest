@@ -16,7 +16,7 @@ count = 0
 class Invest2Spider(scrapy.Spider):
     name = 'invest2'
     #allowed_domains = ['222.190.131.17:8075']
-    start_urls = ['http://222.190.131.17:8075/portalopenPublicInformation.do?method=queryExamineAll']
+    start_urls = ['http://222.190.131.17:8075/portalopenPublicInformation.do?method=querybeianExamineAll']
     custom_settings = {
         'ITEM_PIPELINES': {'govInvest.pipelines.Govinvest2Pipeline': 300},
     }
@@ -24,7 +24,7 @@ class Invest2Spider(scrapy.Spider):
     def parse(self, response):
         global count
         endFlag='0'
-        nextUrl = 'http://222.190.131.17:8075/portalopenPublicInformation.do?method=queryExamineAll'
+        nextUrl = 'http://222.190.131.17:8075/portalopenPublicInformation.do?method=querybeianExamineAll'
         print ('$$$$$$$$$$$$$$$$$$'+str(count)+'$$$$$$$$$$$$$$$$$$')
         #yield scrapy.FormRequest(nextUrl, formdata = {'pageNo':'2'}, callback=self.parse)
         for each in response.xpath("//*[@id='publicInformationForm']/tr"):
@@ -68,7 +68,7 @@ class Invest2Spider(scrapy.Spider):
             yield item
             
         count +=1     
-        if count<100 or endFlag=='0':
+        if count<100 and endFlag=='0':
             print ('go next page ------------------------------'+str(count))
             yield scrapy.FormRequest(nextUrl, formdata = {'pageNo':str(count)}, callback=self.parse)
             

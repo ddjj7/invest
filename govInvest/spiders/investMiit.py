@@ -114,7 +114,7 @@ class ItnvestMiitSpider(scrapy.Spider):
                 add_params['articleType'] = r'政策解读'
             yield scrapy.Request(link, callback=self.get_detail,headers=headers,cb_kwargs=add_params)
           
-        if count<2 or endFlag=='0':
+        if count<5 and endFlag=='0':
             print ('go next '+articleType+' article page ------------------------------'+str(count))
             time.sleep(5)
             yield scrapy.Request(response.url+'?a='+str(count), callback=self.parse,headers=headers)

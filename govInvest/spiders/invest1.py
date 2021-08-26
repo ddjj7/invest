@@ -67,7 +67,7 @@ class Itnvest1Spider(scrapy.Spider):
         #if currDate > datetime.datetime.strptime('2021/05/15', "%Y/%m/%d"): 
         print ('go next page ------------------------------'+str(count))
         nextUrl = 'http://tzxm.ahzwfw.gov.cn/portalopenPublicInformation.do?method=queryExamineAll'
-        if count<50 or endFlag=='0':
+        if count<50 and endFlag=='0':
             yield scrapy.FormRequest(nextUrl, formdata = {'pageNo':str(count)}, callback=self.parse,headers=headers)
              
     def get_detail(self,response):

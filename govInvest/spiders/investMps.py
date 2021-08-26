@@ -98,7 +98,7 @@ class ItnvestMpsSpider(scrapy.Spider):
         urlPattern = 'https://www.mps.gov.cn/n6557558/index_7574611_{num}.html'
         nextUrl = urlPattern.format(num=self.count)
         print(nextUrl)
-        if self.count<100 or endFlag=='0':
+        if self.count<10 and endFlag=='0':
             #pass
             time.sleep(5)
             yield scrapy.Request(nextUrl, callback=self.parse_second,headers=headers)
