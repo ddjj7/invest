@@ -10,7 +10,7 @@ import json
 from scrapy.exporters import CsvItemExporter
 from openpyxl import Workbook
 
-class Govinvest1Pipeline(object):
+class GovinvestAnhuiPipeline(object):
     
 #     def process_item(self, item, spider):
 #         dic = item['dic']
@@ -36,16 +36,7 @@ class Govinvest1Pipeline(object):
         r = requests.post(posturl, data=data, headers=headers)
         return item
     
-class Govinvest2Pipeline(object):
-
-#     def process_item(self, item, spider):
-#         dic = item['dic']
-#         # 持久化存储io操作
-#         with io.open('./govinvest_pipe2.txt','a',encoding='utf-8')as f:
-#             for k,v in dic.items():
-#                 f.write(k+':'+v+'\n')
-#             f.write('==============='.decode('utf-8')+'\n')
-#         return item
+class GovinvestJiangsuPipeline(object):
     
     def process_item(self, item, spider):
         dic = item['dic']
@@ -62,16 +53,7 @@ class Govinvest2Pipeline(object):
         r = requests.post(posturl, data=data, headers=headers)
         return item
     
-class Govinvest3Pipeline(object):
-
-#     def process_item(self, item, spider):
-#         dic = item['dic']
-#         # 持久化存储io操作
-#         with io.open('./govinvest_pipe3.txt','a',encoding='utf-8')as f:
-#             for k,v in dic.items():
-#                 f.write(k+':'+v+'\n')
-#             f.write('==============='.decode('utf-8')+'\n')
-#         return item
+class GovinvestShandongPipeline(object):
     
     def process_item(self, item, spider):
         dic = item['dic']
@@ -88,7 +70,24 @@ class Govinvest3Pipeline(object):
         r = requests.post(posturl, data=data, headers=headers)
         return item
     
-class GovinvestMpsPipeline(object):
+class GovinvestHubeiPipeline(object):
+    
+    def process_item(self, item, spider):
+        dic = item['dic']
+        packet = {}
+        packet['data'] = dic
+        packet['province']='湖北'
+        packet['dateItem']='申请日期'
+        packet['idItem']='projectuuid'
+        # send to java server
+        #posturl = 'http://10.47.123.120:6666/cdp-mcrsrv-admin/collect/saveCollectInfo'
+        posturl = 'http://127.0.0.1:9090/api/recvScrapy1/'
+        headers = {'Content-Type': 'application/json'}
+        data = json.dumps(packet)
+        r = requests.post(posturl, data=data, headers=headers)
+        return item
+    
+class MpsPipeline(object):
 
     def process_item(self, item, spider):
         dic = item['dic']
@@ -107,7 +106,7 @@ class GovinvestMpsPipeline(object):
             f.write('==============='+'\n')
         return item
     
-class GovinvestCacPipeline(object):
+class CacPipeline(object):
 
     def process_item(self, item, spider):
         dic = item['dic']
@@ -122,7 +121,7 @@ class GovinvestCacPipeline(object):
         r = requests.post(posturl, data=data, headers=headers)
         return item
     
-class GovinvestCbircPipeline(object):
+class CbircPipeline(object):
 
     def process_item(self, item, spider):
         dic = item['dic']
@@ -141,7 +140,7 @@ class GovinvestCbircPipeline(object):
             f.write('==============='+'\n')
         return item
     
-class GovinvestMiitPipeline(object):
+class MiitPipeline(object):
 
     def process_item(self, item, spider):
         dic = item['dic']

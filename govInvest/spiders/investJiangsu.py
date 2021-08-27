@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import scrapy
-from govInvest.items import Govinvest2Item
+from govInvest.items import GovinvestJiangsuItem
 
 #import sys
 import time
@@ -14,11 +14,11 @@ count = 0
 
 #江苏
 class InvestJiangsuSpider(scrapy.Spider):
-    name = 'investJiangsu'
+    name = 'investJiangsuSpider'
     #allowed_domains = ['222.190.131.17:8075']
     start_urls = ['http://222.190.131.17:8075/portalopenPublicInformation.do?method=querybeianExamineAll']
     custom_settings = {
-        'ITEM_PIPELINES': {'govInvest.pipelines.Govinvest2Pipeline': 300},
+        'ITEM_PIPELINES': {'govInvest.pipelines.GovinvestJiangsuPipeline': 300},
     }
 
     def parse(self, response):
@@ -28,8 +28,8 @@ class InvestJiangsuSpider(scrapy.Spider):
         print ('$$$$$$$$$$$$$$$$$$'+str(count)+'$$$$$$$$$$$$$$$$$$')
         #/html/body/div[7]/div/div/div/div[3]/ul/table/tbody/tr[2]
         for each in response.xpath("//*[@id='publicInformationForm']/tr"):
-            item = Govinvest2Item()
-            dict = {}
+            item = GovinvestJiangsuItem()
+            investDict = {}
             date = each.xpath("./td[5]/text()").extract()[0]
             time.sleep(0.3) 
             recordDate = datetime.strptime(date, "%Y/%m/%d")
@@ -54,13 +54,12 @@ class InvestJiangsuSpider(scrapy.Spider):
 #                 resultno = resultno[0]
 #             else:
 #                 resultno = 'null'
-            dict[u'项目名称'] = title    #项目名称
-            dict[u'申报单位名称'] = name   #申报单位名称
-            dict[u'备案机关'] = department   #备案机关
-            dict[u'备案证号'] = code    #备案证号
-            dict[u'备案时间'] = date    #备案时间
-            item['dic']=dict
-            print(dict)
+            investDict[u'项目名称'] = title    #项目名称
+            investDict[u'申报单位名称'] = name   #申报单位名称
+            investDict[u'备案机关'] = department   #备案机关
+            investDict[u'备案证号'] = code    #备案证号
+            investDict[u'备案时间'] = date    #备案时间
+            item['dic']=investDict
             yield item
             
         count +=1     

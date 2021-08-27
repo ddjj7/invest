@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import scrapy
 from scrapy.http import Request
-from govInvest.items import Govinvest1Item
+from govInvest.items import GovinvestAnhuiItem
       
 #import sys
 import time
@@ -18,11 +18,11 @@ headers = None
 
 #安徽 
 class InvestAnhuiSpider(scrapy.Spider):
-    name = 'investAnhui'
+    name = 'investAnhuiSpider'
     allowed_domains = ['tzxm.ahzwfw.gov.cn']
     start_urls = ['http://tzxm.ahzwfw.gov.cn/portalopenPublicInformation.do?method=queryExamineAll']
     custom_settings = {
-        'ITEM_PIPELINES': {'govInvest.pipelines.Govinvest1Pipeline': 300},
+        'ITEM_PIPELINES': {'govInvest.pipelines.GovinvestAnhuiPipeline': 300},
     }
     
     def start_requests(self):
@@ -71,8 +71,8 @@ class InvestAnhuiSpider(scrapy.Spider):
             yield scrapy.FormRequest(nextUrl, formdata = {'pageNo':str(count)}, callback=self.parse,headers=headers)
              
     def get_detail(self,response):
-        item = Govinvest1Item()
-        dict = {}
+        item = GovinvestAnhuiItem()
+        investDict = {}
          
         #print(response.text)
         #//*[@id="tab00"]/div[1]/table/tbody/tr[1]/td[1]
@@ -86,10 +86,10 @@ class InvestAnhuiSpider(scrapy.Spider):
         projectLegelPerson = response.xpath("//*[@id='tab00']/div[1]/table/tr[2]/td[3]/text()").extract()[0]
         projectLegelPersonValue = commonTool.returnNotNull(response.xpath("//*[@id='tab00']/div[1]/table/tr[2]/td[4]/text()").extract())
          
-        dict[projectCode] = projectCodeValue
-        dict[projectName] = projectNameValue
-        dict[projectType] = projectTypeValue
-        dict[projectLegelPerson] = projectLegelPersonValue
+        investDict[projectCode] = projectCodeValue
+        investDict[projectName] = projectNameValue
+        investDict[projectType] = projectTypeValue
+        investDict[projectLegelPerson] = projectLegelPersonValue
          
         #//*[@id="tab00"]/div[2]/div[2]/table/tbody/tr[1]/td[1]
         approveDepartment = response.xpath("//*[@id='tab00']/div[2]/div[2]/table/tr[1]/td[1]/text()").extract()[0]
@@ -104,12 +104,12 @@ class InvestAnhuiSpider(scrapy.Spider):
         approveTimeValue =  commonTool.returnNotNull(response.xpath("//*[@id='tab00']/div[2]/div[2]/table/tr[2]/td[4]/text()").extract())
         approveNoValue = commonTool.returnNotNull(response.xpath("//*[@id='tab00']/div[2]/div[2]/table/tr[2]/td[5]/span[1]/text()").extract())
          
-        dict[approveDepartment] = approveDepartmentValue
-        dict[approveMatter] = approveMatterValue
-        dict[approveResult] = approveResultValue
-        dict[approveTime] = approveTimeValue
-        dict[approveNo] = approveNoValue
-        item['dic']=dict
+        investDict[approveDepartment] = approveDepartmentValue
+        investDict[approveMatter] = approveMatterValue
+        investDict[approveResult] = approveResultValue
+        investDict[approveTime] = approveTimeValue
+        investDict[approveNo] = approveNoValue
+        item['dic']=investDict
         return item
     
     

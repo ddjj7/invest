@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import scrapy
-from govInvest.items import Govinvest3Item
+from govInvest.items import GovinvestShandongItem
 
 import time
 from datetime import timedelta, datetime
@@ -11,11 +11,11 @@ count = 1
 
 #山东
 class InvestShandongSpider(scrapy.Spider):
-    name = 'investShandong'
+    name = 'investShandongSpider'
     #allowed_domains = ['221.214.94.51:8081']
     start_urls = ['http://221.214.94.51:8081/icity/ipro/projectlist']
     custom_settings = {
-        'ITEM_PIPELINES': {'govInvest.pipelines.Govinvest3Pipeline': 300},
+        'ITEM_PIPELINES': {'govInvest.pipelines.GovinvestShandongPipeline': 300},
     }
 
     def parse(self, response):
@@ -38,8 +38,8 @@ class InvestShandongSpider(scrapy.Spider):
         r = requests.post(posturl, data=data, headers=headers)
         body = json.loads(r.text)
         for each in body['data']:
-            item = Govinvest3Item()
-            dict = {}
+            item = GovinvestShandongItem()
+            investDict = {}
             applyDate = each['APPLY_DATE']
             recordDate = datetime.strptime(applyDate, "%Y-%m-%d")
             currDate = datetime.strptime(datetime.now().strftime("%Y-%m-%d"), "%Y-%m-%d")
@@ -74,15 +74,15 @@ class InvestShandongSpider(scrapy.Spider):
             elif projectType == 'A00003':
                 projectType= u'备案类项目'
             
-            dict[u'项目代码'] = projectCode   #项目代码
-            dict[u'项目名称'] = projectName   #项目名称
-            dict[u'项目(法人)单位'] = enterpriseName  #项目(法人)单位
-            dict[u'项目法人'] = contactName   #项目法人
-            dict[u'项目阶段'] = u'已赋码'   #项目阶段  99=已赋码
-            dict[u'seqId'] = seqId
-            dict[u'项目类型'] = projectType  #项目类型
-            dict[u'申报时间'] = applyDate   #申报时间
-            item[u'dic']=dict
+            investDict[u'项目代码'] = projectCode   #项目代码
+            investDict[u'项目名称'] = projectName   #项目名称
+            investDict[u'项目(法人)单位'] = enterpriseName  #项目(法人)单位
+            investDict[u'项目法人'] = contactName   #项目法人
+            investDict[u'项目阶段'] = u'已赋码'   #项目阶段  99=已赋码
+            investDict[u'seqId'] = seqId
+            investDict[u'项目类型'] = projectType  #项目类型
+            investDict[u'申报时间'] = applyDate   #申报时间
+            item['dic']=investDict
             yield item
             
         count +=1     

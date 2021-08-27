@@ -16,7 +16,7 @@ class CbircSpider(scrapy.Spider):
     start_urls = ['https://www.cbirc.gov.cn/cn/static/data/DocInfo/SelectDocByItemIdAndChild/data_itemId=927,pageIndex=1,pageSize=18.json',
                   'https://www.cbirc.gov.cn/cn/static/data/DocInfo/SelectDocByItemIdAndChild/data_itemId=928,pageIndex=1,pageSize=18.json']
     custom_settings = {
-        'ITEM_PIPELINES': {'govInvest.pipelines.GovinvestCbircPipeline': 300},
+        'ITEM_PIPELINES': {'govInvest.pipelines.CbircPipeline': 300},
     }
     
     #只取第一页

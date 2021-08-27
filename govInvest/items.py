@@ -8,7 +8,7 @@
 import scrapy
 
 
-class Govinvest1Item(scrapy.Item):
+class GovinvestAnhuiItem(scrapy.Item):
     # define the fields for your item here like:
 #     department = scrapy.Field()
 #     result = scrapy.Field()
@@ -20,11 +20,15 @@ class Govinvest1Item(scrapy.Item):
     dic = scrapy.Field()
     pass
 
-class Govinvest2Item(scrapy.Item):
+class GovinvestJiangsuItem(scrapy.Item):
     dic = scrapy.Field()
     pass
 
-class Govinvest3Item(scrapy.Item):
+class GovinvestShandongItem(scrapy.Item):
+    dic = scrapy.Field()
+    pass
+
+class GovinvestHubeiItem(scrapy.Item):
     dic = scrapy.Field()
     pass
 

@@ -20,7 +20,7 @@ class MpsSpider(scrapy.Spider):
     allowed_domains = ['www.mps.gov.cn']
     start_urls = ['https://www.mps.gov.cn/n6557558/index.html']
     custom_settings = {
-        'ITEM_PIPELINES': {'govInvest.pipelines.GovinvestMpsPipeline': 300},
+        'ITEM_PIPELINES': {'govInvest.pipelines.MpsPipeline': 300},
     }
     
     def start_requests(self):

@@ -17,7 +17,7 @@ class CacSpider(scrapy.Spider):
                   'http://www.cac.gov.cn/zcfg/gfxwj/A090905index_1.htm',
                   'http://www.cac.gov.cn/zcfg/zcwj/A090906index_1.htm']
     custom_settings = {
-        'ITEM_PIPELINES': {'govInvest.pipelines.GovinvestCacPipeline': 300},
+        'ITEM_PIPELINES': {'govInvest.pipelines.CacPipeline': 300},
     }
     
     #只取第一页

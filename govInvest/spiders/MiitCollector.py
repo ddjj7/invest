@@ -28,7 +28,7 @@ class MiitSpider(scrapy.Spider):
                   'https://www.miit.gov.cn/zwgk/zcjd/index.html',
                   'https://www.miit.gov.cn/search-front-server/api/search/info']
     custom_settings = {
-        'ITEM_PIPELINES': {'govInvest.pipelines.GovinvestMiitPipeline': 300},
+        'ITEM_PIPELINES': {'govInvest.pipelines.MiitPipeline': 300},
     }
     
     def start_requests(self):
