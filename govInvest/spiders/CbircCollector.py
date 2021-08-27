@@ -9,8 +9,8 @@ from datetime import timedelta, datetime
 from scrapy.http import HtmlResponse
 
 #银保监
-class ItnvestCbircSpider(scrapy.Spider):
-    name = 'investCbirc'
+class CbircSpider(scrapy.Spider):
+    name = 'cbircSpider'
     allowed_domains = ['www.cbirc.gov.cn']
     #start手动改一下页码，做个铺底
     start_urls = ['https://www.cbirc.gov.cn/cn/static/data/DocInfo/SelectDocByItemIdAndChild/data_itemId=927,pageIndex=1,pageSize=18.json',

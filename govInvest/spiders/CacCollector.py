@@ -7,8 +7,8 @@ from datetime import timedelta, datetime
 
 count=0
 #网信
-class ItnvestMpsSpider(scrapy.Spider):
-    name = 'investCac'
+class CacSpider(scrapy.Spider):
+    name = 'cacSpider'
     allowed_domains = ['www.cac.gov.cn']
     start_urls = ['http://www.cac.gov.cn/zcfg/fl/A090901index_1.htm',
                   'http://www.cac.gov.cn/zcfg/xzfg/A090902index_1.htm',

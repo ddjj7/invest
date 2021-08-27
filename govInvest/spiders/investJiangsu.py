@@ -13,8 +13,8 @@ import govInvest.commonTools as tool
 count = 0
 
 #江苏
-class Invest2Spider(scrapy.Spider):
-    name = 'invest2'
+class InvestJiangsuSpider(scrapy.Spider):
+    name = 'investJiangsu'
     #allowed_domains = ['222.190.131.17:8075']
     start_urls = ['http://222.190.131.17:8075/portalopenPublicInformation.do?method=querybeianExamineAll']
     custom_settings = {
@@ -26,11 +26,11 @@ class Invest2Spider(scrapy.Spider):
         endFlag='0'
         nextUrl = 'http://222.190.131.17:8075/portalopenPublicInformation.do?method=querybeianExamineAll'
         print ('$$$$$$$$$$$$$$$$$$'+str(count)+'$$$$$$$$$$$$$$$$$$')
-        #yield scrapy.FormRequest(nextUrl, formdata = {'pageNo':'2'}, callback=self.parse)
+        #/html/body/div[7]/div/div/div/div[3]/ul/table/tbody/tr[2]
         for each in response.xpath("//*[@id='publicInformationForm']/tr"):
             item = Govinvest2Item()
             dict = {}
-            date = each.xpath("./td[7]/text()").extract()[0]
+            date = each.xpath("./td[5]/text()").extract()[0]
             time.sleep(0.3) 
             recordDate = datetime.strptime(date, "%Y/%m/%d")
             currDate = datetime.strptime(datetime.now().strftime("%Y-%m-%d"), "%Y-%m-%d")
@@ -39,36 +39,33 @@ class Invest2Spider(scrapy.Spider):
             #print(yesterday)
             if currDate == recordDate:
                 print('currDate == recordDate')
-                continue 
+                #continue 
             if yesterday > recordDate:
-                endFlag='1'
+                #endFlag='1'
                 print('yesterday > recordDate')
-                continue 
+                #continue 
             #do sth. here
             title = tool.returnNotNull(each.xpath("./td[1]/@title").extract())
-            matter = tool.returnNotNull(each.xpath("./td[2]/text()").extract())
+            name = tool.returnNotNull(each.xpath("./td[2]/text()").extract())
             department = tool.returnNotNull(each.xpath("./td[3]/text()").extract())
-            district = tool.returnNotNull(each.xpath("./td[4]/text()").extract())
-            result = tool.returnNotNull(each.xpath("./td[5]/text()").extract())
-            if result !=u'批复':
-                continue
-            resultno = tool.returnNotNull(each.xpath("./td[6]/text()").extract())
+            code = tool.returnNotNull(each.xpath("./td[4]/text()").extract())
+            date = tool.returnNotNull(each.xpath("./td[5]/text()").extract())
 #             if len(resultno)>0:
 #                 resultno = resultno[0]
 #             else:
 #                 resultno = 'null'
             dict[u'项目名称'] = title    #项目名称
-            dict[u'审批事项'] = matter   #审批事项
-            dict[u'审批部门'] = department   #审批部门
-            dict[u'部门区划'] = district    #部门区划
-            dict[u'审批结果'] = result    #审批结果
-            dict[u'批复文号'] = resultno   #批复文号
-            dict[u'审批时间'] = date    #审批时间
+            dict[u'申报单位名称'] = name   #申报单位名称
+            dict[u'备案机关'] = department   #备案机关
+            dict[u'备案证号'] = code    #备案证号
+            dict[u'备案时间'] = date    #备案时间
             item['dic']=dict
+            print(dict)
             yield item
             
         count +=1     
-        if count<100 and endFlag=='0':
+        if count<3 and endFlag=='0':
             print ('go next page ------------------------------'+str(count))
+            time.sleep(5)
             yield scrapy.FormRequest(nextUrl, formdata = {'pageNo':str(count)}, callback=self.parse)
             

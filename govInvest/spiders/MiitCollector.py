@@ -17,8 +17,8 @@ endFlag = '0'
 headers = None
 
 #工信
-class ItnvestMiitSpider(scrapy.Spider):
-    name = 'investMiit'
+class MiitSpider(scrapy.Spider):
+    name = 'miitSpider'
     zcjdCount = 1
     wjgsCount = 1
     filePgCount = {'个人信息':1,'融资租赁':1,'数据':1,'车辆':1}

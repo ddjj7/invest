@@ -14,8 +14,8 @@ endFlag = '0'
 headers = None
 
 #公安
-class ItnvestMpsSpider(scrapy.Spider):
-    name = 'investMps'
+class MpsSpider(scrapy.Spider):
+    name = 'mpsSpider'
     count = 0
     allowed_domains = ['www.mps.gov.cn']
     start_urls = ['https://www.mps.gov.cn/n6557558/index.html']

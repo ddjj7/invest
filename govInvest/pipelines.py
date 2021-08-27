@@ -52,8 +52,8 @@ class Govinvest2Pipeline(object):
         packet = {}
         packet['data'] = dic
         packet['province']='江苏'
-        packet['dateItem']='审批时间'
-        packet['idItem']='批复文号'
+        packet['dateItem']='备案时间'
+        packet['idItem']='备案证号'
         # send to java server
         #posturl = 'http://10.47.123.120:6666/cdp-mcrsrv-admin/collect/saveCollectInfo'
         posturl = 'http://127.0.0.1:9090/api/recvScrapy1/'

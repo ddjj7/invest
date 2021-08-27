@@ -17,8 +17,8 @@ count = 0
 headers = None
 
 #安徽 
-class Itnvest1Spider(scrapy.Spider):
-    name = 'invest1'
+class InvestAnhuiSpider(scrapy.Spider):
+    name = 'investAnhui'
     allowed_domains = ['tzxm.ahzwfw.gov.cn']
     start_urls = ['http://tzxm.ahzwfw.gov.cn/portalopenPublicInformation.do?method=queryExamineAll']
     custom_settings = {

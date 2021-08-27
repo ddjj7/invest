@@ -10,8 +10,8 @@ import json
 count = 1
 
 #山东
-class Invest3Spider(scrapy.Spider):
-    name = 'invest3'
+class InvestShandongSpider(scrapy.Spider):
+    name = 'investShandong'
     #allowed_domains = ['221.214.94.51:8081']
     start_urls = ['http://221.214.94.51:8081/icity/ipro/projectlist']
     custom_settings = {

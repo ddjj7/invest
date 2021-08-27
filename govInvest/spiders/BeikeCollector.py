@@ -7,8 +7,8 @@ import time
 endFlag = '0'
 headers = None
 
-class ItnvestBeikeSpider(scrapy.Spider):
-    name = 'investBeike'
+class BeikeSpider(scrapy.Spider):
+    name = 'beikeSpider'
     count = 1
     allowed_domains = ['sh.ke.com']
     start_urls = ['https://sh.ke.com/ershoufang/yangpu/p5/']
