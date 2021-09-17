@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import scrapy
 from scrapy.http import Request
-from govInvest.items import GovinvestMpsItem
+from govInvest.items import MpsItem
       
 import time
 from datetime import timedelta, datetime
@@ -104,7 +104,7 @@ class MpsSpider(scrapy.Spider):
             yield scrapy.Request(nextUrl, callback=self.parse_second,headers=headers)
              
     def get_detail(self,response,date,title,link):
-        item = GovinvestMpsItem()
+        item = MpsItem()
         docDict = {}
          
         texts = []

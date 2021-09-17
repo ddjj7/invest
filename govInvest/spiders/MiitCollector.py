@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import scrapy
 from scrapy.http import Request
-from govInvest.items import GovinvestMiitItem
+from govInvest.items import MiitItem
       
 import time
 import requests
@@ -182,7 +182,7 @@ class MiitSpider(scrapy.Spider):
             
              
     def get_detail(self,response,date,title,link,articleType):
-        item = GovinvestMiitItem()
+        item = MiitItem()
         docDict = {}
         #print(response.text)
         text = ''

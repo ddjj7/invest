@@ -8,4 +8,5 @@ Created on 2021年5月12日
 def returnNotNull(fieldList):
     if len(fieldList)>0:
         return fieldList[0]
+    
         

@@ -39,15 +39,15 @@ class InvestHubeiSpider(scrapy.Spider):
             #print(yesterday)
             if currDate == recordDate:
                 print('currDate == recordDate')
-                #continue 
+                continue 
             if yesterday > recordDate:
-                #endFlag='1'
+                endFlag='1'
                 print('yesterday > recordDate')
-                #continue 
+                continue 
             yield scrapy.FormRequest(self.detail_url, formdata = {'projectuuid':projectuuid}, callback=self.get_detail)
             
         self.count +=1     
-        if self.count<5 and endFlag=='0':
+        if self.count<30 and endFlag=='0':
             print ('go next page ------------------------------'+str(self.count))
             time.sleep(5) 
             yield scrapy.FormRequest(self.start_urls[0], formdata = {'pageNo':str(self.count)}, callback=self.parse)

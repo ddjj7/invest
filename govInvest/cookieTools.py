@@ -5,7 +5,8 @@ import io
 import execjs
 import hashlib
 import json
-from requests.utils import add_dict_to_cookiejar
+import time
+import random
 
 #url = 'https://www.mps.gov.cn/n6557558/index.html'
 headers = {
@@ -86,7 +87,6 @@ def get_unsbox(arg1):
              0x6, 0xb, 0x27, 0x12, 0x14, 0x8, 0xe, 0x15, 0x20, 0x1a, 0x2, 0x1e, 0x7, 0x4, 0x11, 0x5, 0x3, 0x1c,
              0x22, 0x25, 0xc, 0x24]
     va = []
-    ret = ''
     for i in charList:
         va.append(arg1[i-1])
     ret = "".join(va)
@@ -107,6 +107,7 @@ def get_hexxor(s1, constVar):
 
 def getAHHeaderWithCookie(url):
     r = requests.get(url, headers=headers)
+    #print(r.text)
     arg1 = re.findall("arg1=\'(.*?)\'", r.text)[0]
     var1 = get_unsbox(arg1)
     var2 = get_hexxor(var1,'3000176000856006061501533003690027800375')
@@ -114,6 +115,45 @@ def getAHHeaderWithCookie(url):
     headers['cookie']='acw_sc__v2='+var2
     print(headers)
     return headers
+
+'''
+江西政府投资
+'''
+def getJiangxiCookieParam(url):
+    chars = '0123456789abcdef'
+    r = requests.get(url)
+    sig = re.findall(r'var __signature = "(.*)"', r.text)[0]
+    print(sig)
+    
+    key = ''
+    keyIndex = -1
+    for i in range(0,6):
+        c = sig[keyIndex+1]
+        #print(c)
+        key+=c
+        keyIndex = chars.find(c)
+        if keyIndex <0 or keyIndex >= len(sig):
+            keyIndex = i
+    timestamp = str(int(random.random()*9000 + 1000)) + '_' + key + '_' + str(int(time.time())*1000).replace('+','-')
+    print(timestamp)
+    
+    tkey = ''
+    tkeyIndex = -1
+    for i in range(0,6):
+        c = timestamp[tkeyIndex+1]
+        #print(c)
+        tkey+=c
+        tkeyIndex = chars.find(c)
+        if tkeyIndex <0 or tkeyIndex >= len(timestamp):
+            tkeyIndex = i
+    print(tkey)
+    
+    print('s='+sig)
+    print('t='+timestamp)
+    print('o='+tkey)
+    
+    return sig,timestamp,tkey
+
 
 if __name__ == '__main__':
     headers=getMpsHeaderWithCookie('https://www.miit.gov.cn/zwgk/wjgs/index.html')

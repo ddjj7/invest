@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import scrapy
-from govInvest.items import GovinvestCbircItem
+from govInvest.items import CbircItem
       
 import json
 import re
@@ -84,7 +84,7 @@ class CbircSpider(scrapy.Spider):
     def get_detail(self,response,docDict):
         response = HtmlResponse(url=response.url, body=response.body, encoding='utf-8')  
         #print(response.encoding)  #查看网页返回的字符集类型
-        item = GovinvestCbircItem()
+        item = CbircItem()
         #print(response.text)
         body = json.loads(response.text)
         article = body['data']['docClob']

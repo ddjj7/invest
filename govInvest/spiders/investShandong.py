@@ -13,7 +13,7 @@ count = 1
 class InvestShandongSpider(scrapy.Spider):
     name = 'investShandongSpider'
     #allowed_domains = ['221.214.94.51:8081']
-    start_urls = ['http://221.214.94.51:8081/icity/ipro/projectlist']
+    start_urls = ['http://tzxm.jxzwfww.gov.cn/icity/ipro/open/publicity']
     custom_settings = {
         'ITEM_PIPELINES': {'govInvest.pipelines.GovinvestShandongPipeline': 300},
     }
@@ -86,7 +86,7 @@ class InvestShandongSpider(scrapy.Spider):
             yield item
             
         count +=1     
-        if count<100 and endFlag=='0':
+        if count<50 and endFlag=='0':
             print ('go next page ------------------------------'+str(count))
             time.sleep(5) 
             startUrl = 'http://221.214.94.51:8081/icity/ipro/projectlist'  #没用

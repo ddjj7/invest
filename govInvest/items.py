@@ -32,19 +32,27 @@ class GovinvestHubeiItem(scrapy.Item):
     dic = scrapy.Field()
     pass
 
-class GovinvestMpsItem(scrapy.Item):
+class GovinvestGuangdongItem(scrapy.Item):
     dic = scrapy.Field()
     pass
 
-class GovinvestCacItem(scrapy.Item):
+class GovinvestJiangxiItem(scrapy.Item):
     dic = scrapy.Field()
     pass
 
-class GovinvestCbircItem(scrapy.Item):
+class MpsItem(scrapy.Item):
     dic = scrapy.Field()
     pass
 
-class GovinvestMiitItem(scrapy.Item):
+class CacItem(scrapy.Item):
+    dic = scrapy.Field()
+    pass
+
+class CbircItem(scrapy.Item):
+    dic = scrapy.Field()
+    pass
+
+class MiitItem(scrapy.Item):
     dic = scrapy.Field()
     pass
 

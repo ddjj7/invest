@@ -11,7 +11,7 @@ class BeikeSpider(scrapy.Spider):
     name = 'beikeSpider'
     count = 1
     allowed_domains = ['sh.ke.com']
-    start_urls = ['https://sh.ke.com/ershoufang/yangpu/p5/']
+    start_urls = ['https://sh.ke.com/ershoufang/yangpu/p4/']
     custom_settings = {
         'ITEM_PIPELINES': {'govInvest.pipelines.BeikeXlsxPipeline': 300},
     }
@@ -55,7 +55,7 @@ class BeikeSpider(scrapy.Spider):
         self.count +=1     
         print ('go next page ------------------------------'+str(self.count))
         if self.count<12 and endFlag=='0':
-            nextUrl = 'https://sh.ke.com/ershoufang/yangpu/pg{count}p5'.format(count=self.count)
+            nextUrl = 'https://sh.ke.com/ershoufang/yangpu/pg{count}p4'.format(count=self.count)
             time.sleep(5)
             yield scrapy.Request(nextUrl, callback=self.parse)
             

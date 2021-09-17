@@ -28,6 +28,7 @@ class GovinvestAnhuiPipeline(object):
         packet['province']='安徽'
         packet['dateItem']='审批时间'
         packet['idItem']='项目代码'
+        packet['companyItem']=''
         # send to java server
         #posturl = 'http://10.47.123.120:6666/cdp-mcrsrv-admin/collect/saveCollectInfo'
         posturl = 'http://127.0.0.1:9090/api/recvScrapy1/'
@@ -45,6 +46,7 @@ class GovinvestJiangsuPipeline(object):
         packet['province']='江苏'
         packet['dateItem']='备案时间'
         packet['idItem']='备案证号'
+        packet['companyItem']='申报单位名称'
         # send to java server
         #posturl = 'http://10.47.123.120:6666/cdp-mcrsrv-admin/collect/saveCollectInfo'
         posturl = 'http://127.0.0.1:9090/api/recvScrapy1/'
@@ -62,6 +64,7 @@ class GovinvestShandongPipeline(object):
         packet['province']='山东'
         packet['dateItem']='申报时间'
         packet['idItem']='项目代码'
+        packet['companyItem']='项目(法人)单位'
         # send to java server
         #posturl = 'http://10.47.123.120:6666/cdp-mcrsrv-admin/collect/saveCollectInfo'
         posturl = 'http://127.0.0.1:9090/api/recvScrapy1/'
@@ -78,7 +81,43 @@ class GovinvestHubeiPipeline(object):
         packet['data'] = dic
         packet['province']='湖北'
         packet['dateItem']='申请日期'
-        packet['idItem']='projectuuid'
+        packet['idItem']='项目代码'
+        packet['companyItem']='单位名称'
+        # send to java server
+        #posturl = 'http://10.47.123.120:6666/cdp-mcrsrv-admin/collect/saveCollectInfo'
+        posturl = 'http://127.0.0.1:9090/api/recvScrapy1/'
+        headers = {'Content-Type': 'application/json'}
+        data = json.dumps(packet)
+        r = requests.post(posturl, data=data, headers=headers)
+        return item
+    
+class GovinvestGuangdongPipeline(object):
+    
+    def process_item(self, item, spider):
+        dic = item['dic']
+        packet = {}
+        packet['data'] = dic
+        packet['province']='广东'
+        packet['dateItem']='备案通过日期'
+        packet['idItem']='项目编号'
+        packet['companyItem']=''
+        # send to java server
+        #posturl = 'http://10.47.123.120:6666/cdp-mcrsrv-admin/collect/saveCollectInfo'
+        posturl = 'http://127.0.0.1:9090/api/recvScrapy1/'
+        headers = {'Content-Type': 'application/json'}
+        data = json.dumps(packet)
+        r = requests.post(posturl, data=data, headers=headers)
+        return item
+    
+class GovinvestJiangxiPipeline(object):
+    
+    def process_item(self, item, spider):
+        dic = item['dic']
+        packet = {}
+        packet['data'] = dic
+        packet['province']='江西'
+        packet['idItem']='项目代码'
+        packet['companyItem']='ORG_NAME'
         # send to java server
         #posturl = 'http://10.47.123.120:6666/cdp-mcrsrv-admin/collect/saveCollectInfo'
         posturl = 'http://127.0.0.1:9090/api/recvScrapy1/'

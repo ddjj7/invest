@@ -39,11 +39,11 @@ class InvestJiangsuSpider(scrapy.Spider):
             #print(yesterday)
             if currDate == recordDate:
                 print('currDate == recordDate')
-                #continue 
+                continue 
             if yesterday > recordDate:
-                #endFlag='1'
+                endFlag='1'
                 print('yesterday > recordDate')
-                #continue 
+                continue 
             #do sth. here
             title = tool.returnNotNull(each.xpath("./td[1]/@title").extract())
             name = tool.returnNotNull(each.xpath("./td[2]/text()").extract())
@@ -63,7 +63,7 @@ class InvestJiangsuSpider(scrapy.Spider):
             yield item
             
         count +=1     
-        if count<3 and endFlag=='0':
+        if count<30 and endFlag=='0':
             print ('go next page ------------------------------'+str(count))
             time.sleep(5)
             yield scrapy.FormRequest(nextUrl, formdata = {'pageNo':str(count)}, callback=self.parse)

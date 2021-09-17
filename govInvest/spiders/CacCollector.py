@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import scrapy
-from govInvest.items import GovinvestCacItem
+from govInvest.items import CacItem
       
 import time
 from datetime import timedelta, datetime
@@ -62,7 +62,7 @@ class CacSpider(scrapy.Spider):
 #         print ('go next page ------------------------------'+str(count))
              
     def get_detail(self,response,date,title,link,articleType):
-        item = GovinvestCacItem()
+        item = CacItem()
         docDict = {}
         text = ''
         for each in response.xpath("//*[@id='BodyLabel']"):
