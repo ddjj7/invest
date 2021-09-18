@@ -19,10 +19,11 @@ class CbircSpider(scrapy.Spider):
         'ITEM_PIPELINES': {'govInvest.pipelines.CbircPipeline': 300},
     }
     
-    #只取第一页
+    #927只取第一页，928有3页，手工改下start链接跑3次，做次铺底，后续只跑第一页就行
     def parse(self, response):
         global count
         zcfg=0
+        articleType = ''
         print(response.text)
         print(response.url)
         body = json.loads(response.text)
@@ -39,12 +40,14 @@ class CbircSpider(scrapy.Spider):
             builddate = each['builddate']
             print(builddate)
             if itemId==927:
-                zcfg=0;
+                zcfg = 0
+                articleType = '法律法规'
             else:
                 zcfg=1;
+                articleType = '规章及规范性文件'
             pdfDownloadUrlPattern = 'https://www.cbirc.gov.cn/cbircweb/download/downloadPdf?docId={docId}&zcfg={zcfg}&itemId={itemId}'
             wordDownloadUrlPattern = 'https://www.cbirc.gov.cn/cbircweb/download/downloadDoc?docId={docId}&zcfg={zcfg}&itemId={itemId}'
-            jsonUrlPattern = 'http://www.cbirc.gov.cn/cn/static/data/DocInfo/SelectByDocId/data_docId={docId}.json'
+            jsonUrlPattern = 'https://www.cbirc.gov.cn/cn/static/data/DocInfo/SelectByDocId/data_docId={docId}.json'
             pdfDownloadUrl = pdfDownloadUrlPattern.format(docId=docId,itemId=itemId,zcfg=zcfg)
             wordDownloadUrl = wordDownloadUrlPattern.format(docId=docId,itemId=itemId,zcfg=zcfg)
             jsonUrl = jsonUrlPattern.format(docId=docId)
@@ -71,13 +74,15 @@ class CbircSpider(scrapy.Spider):
             
             add_params = {}
             docDict = {}
-            docDict['publishDate'] = publishDate
+            docDict['date'] = publishDate
             docDict['builddate'] = builddate
-            docDict['articleLink'] = articleLink
+            docDict['link'] = articleLink
             docDict['docId'] = docId
             docDict['pdfDownloadUrl'] = pdfDownloadUrl
             docDict['wordDownloadUrl'] = wordDownloadUrl
-            docDict['docTitle'] = docTitle
+            docDict['title'] = docTitle
+            docDict['typeOne'] = '政务信息'
+            docDict['typeTwo'] = articleType
             add_params['docDict'] = docDict
             yield scrapy.Request(jsonUrl, callback=self.get_detail,cb_kwargs=add_params)
             
@@ -89,7 +94,7 @@ class CbircSpider(scrapy.Spider):
         body = json.loads(response.text)
         article = body['data']['docClob']
         #print(article)
-        docDict['article'] = article
+        docDict['content'] = article
         item['dic']=docDict
         time.sleep(5)
         return item     

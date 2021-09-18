@@ -7,7 +7,6 @@
 import io
 import requests 
 import json
-from scrapy.exporters import CsvItemExporter
 from openpyxl import Workbook
 
 class GovinvestAnhuiPipeline(object):
@@ -34,7 +33,7 @@ class GovinvestAnhuiPipeline(object):
         posturl = 'http://127.0.0.1:9090/api/recvScrapy1/'
         headers = {'Content-Type': 'application/json'}
         data = json.dumps(packet)
-        r = requests.post(posturl, data=data, headers=headers)
+        requests.post(posturl, data=data, headers=headers)
         return item
     
 class GovinvestJiangsuPipeline(object):
@@ -52,7 +51,7 @@ class GovinvestJiangsuPipeline(object):
         posturl = 'http://127.0.0.1:9090/api/recvScrapy1/'
         headers = {'Content-Type': 'application/json'}
         data = json.dumps(packet)
-        r = requests.post(posturl, data=data, headers=headers)
+        requests.post(posturl, data=data, headers=headers)
         return item
     
 class GovinvestShandongPipeline(object):
@@ -70,7 +69,7 @@ class GovinvestShandongPipeline(object):
         posturl = 'http://127.0.0.1:9090/api/recvScrapy1/'
         headers = {'Content-Type': 'application/json'}
         data = json.dumps(packet)
-        r = requests.post(posturl, data=data, headers=headers)
+        requests.post(posturl, data=data, headers=headers)
         return item
     
 class GovinvestHubeiPipeline(object):
@@ -88,7 +87,7 @@ class GovinvestHubeiPipeline(object):
         posturl = 'http://127.0.0.1:9090/api/recvScrapy1/'
         headers = {'Content-Type': 'application/json'}
         data = json.dumps(packet)
-        r = requests.post(posturl, data=data, headers=headers)
+        requests.post(posturl, data=data, headers=headers)
         return item
     
 class GovinvestGuangdongPipeline(object):
@@ -106,7 +105,7 @@ class GovinvestGuangdongPipeline(object):
         posturl = 'http://127.0.0.1:9090/api/recvScrapy1/'
         headers = {'Content-Type': 'application/json'}
         data = json.dumps(packet)
-        r = requests.post(posturl, data=data, headers=headers)
+        requests.post(posturl, data=data, headers=headers)
         return item
     
 class GovinvestJiangxiPipeline(object):
@@ -123,7 +122,7 @@ class GovinvestJiangxiPipeline(object):
         posturl = 'http://127.0.0.1:9090/api/recvScrapy1/'
         headers = {'Content-Type': 'application/json'}
         data = json.dumps(packet)
-        r = requests.post(posturl, data=data, headers=headers)
+        requests.post(posturl, data=data, headers=headers)
         return item
     
 class MpsPipeline(object):
@@ -138,7 +137,7 @@ class MpsPipeline(object):
         posturl = 'http://127.0.0.1:9090/api/recvScrapy1/'
         headers = {'Content-Type': 'application/json'}
         data = json.dumps(packet)
-        r = requests.post(posturl, data=data, headers=headers)
+        requests.post(posturl, data=data, headers=headers)
         with io.open('./mps.txt','a',encoding='utf-8')as f:
             for k,v in dic.items():
                 f.write(k+':'+str(v)+'\n')
@@ -157,7 +156,7 @@ class CacPipeline(object):
         posturl = 'http://127.0.0.1:9090/api/recvScrapy1/'
         headers = {'Content-Type': 'application/json'}
         data = json.dumps(packet)
-        r = requests.post(posturl, data=data, headers=headers)
+        requests.post(posturl, data=data, headers=headers)
         return item
     
 class CbircPipeline(object):
@@ -172,7 +171,7 @@ class CbircPipeline(object):
         posturl = 'http://127.0.0.1:9090/api/recvScrapy1/'
         headers = {'Content-Type': 'application/json'}
         data = json.dumps(packet)
-        r = requests.post(posturl, data=data, headers=headers)
+        requests.post(posturl, data=data, headers=headers)
         with io.open('./cbirc.txt','a',encoding='utf-8')as f:
             for k,v in dic.items():
                 f.write(k+':'+str(v)+'\n')
@@ -191,7 +190,7 @@ class MiitPipeline(object):
         posturl = 'http://127.0.0.1:9090/api/recvScrapy1/'
         headers = {'Content-Type': 'application/json'}
         data = json.dumps(packet)
-        r = requests.post(posturl, data=data, headers=headers)
+        requests.post(posturl, data=data, headers=headers)
         return item
     
 class BeikePipeline(object):

@@ -114,11 +114,12 @@ class MiitSpider(scrapy.Spider):
                 add_params['articleType'] = r'政策解读'
             yield scrapy.Request(link, callback=self.get_detail,headers=headers,cb_kwargs=add_params)
           
+        #政策解读18页，文件公式106页，需要首次进行铺底
         if count<5 and endFlag=='0':
             print ('go next '+articleType+' article page ------------------------------'+str(count))
             time.sleep(5)
             yield scrapy.Request(response.url+'?a='+str(count), callback=self.parse,headers=headers)
-            
+    #等待调试中   
     def parse_fileRepo(self, response, params):
         global endFlag
         endFlag = '0'
@@ -189,13 +190,14 @@ class MiitSpider(scrapy.Spider):
         for each in response.xpath("//*[@id='con_con']"):
             text = each.xpath("./p").xpath('string(.)').extract()
             #print(text)
-        docDict['date'] = date
+        docDict['date'] = datetime.strptime(date, "%Y-%m-%d").strftime("%Y-%m-%d %H:%M:%S")
         #print(date)
         docDict['title'] = title
         #print(title)
         docDict['link'] = link
-        docDict['text'] = text
-        docDict['type'] = articleType
+        docDict['content'] = text
+        docDict['typeOne'] = '政务公开'
+        docDict['typeTwo'] = articleType
         item['dic']=docDict
         time.sleep(5)
         return item

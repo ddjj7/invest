@@ -29,7 +29,9 @@ class MpsSpider(scrapy.Spider):
             headers = cookieTool.getMpsHeaderWithCookie(self.start_urls[0])
         yield Request(self.start_urls[0],headers=headers, callback=self.parse)
     
-              
+    '''
+    先爬第一页
+    '''
     def parse(self, response):
         #global count
         global endFlag
@@ -66,18 +68,23 @@ class MpsSpider(scrapy.Spider):
             add_params['date'] = date
             add_params['title'] = title
             add_params['link'] = link
+            time.sleep(5)
             yield scrapy.Request(link, callback=self.get_detail,headers=headers,cb_kwargs=add_params)
          
         self.count +=1     
         print ('go next page ------------------------------'+str(self.count))
+        #转到列表页面开始爬
         urlPattern = 'https://www.mps.gov.cn/n6557558/index_7574611_{num}.html'
         nextUrl = urlPattern.format(num=self.count)
         print(nextUrl)
-        if self.count<2 or endFlag=='0':
+        if self.count<2 and endFlag=='0':
             #pass
             time.sleep(5)
             yield scrapy.Request(nextUrl, callback=self.parse_second,headers=headers)
             
+    '''
+    爬历史列表页面
+    '''
     def parse_second(self,response):
         #/html/body/ul/li[10]
         for each in response.xpath("//html/body/ul/li"):
@@ -98,7 +105,8 @@ class MpsSpider(scrapy.Spider):
         urlPattern = 'https://www.mps.gov.cn/n6557558/index_7574611_{num}.html'
         nextUrl = urlPattern.format(num=self.count)
         print(nextUrl)
-        if self.count<10 and endFlag=='0':
+        #实际超过40页，不到50页，全量第一次采集，后续不需要了
+        if self.count<50 and endFlag=='0':
             #pass
             time.sleep(5)
             yield scrapy.Request(nextUrl, callback=self.parse_second,headers=headers)
@@ -113,15 +121,17 @@ class MpsSpider(scrapy.Spider):
         for each in response.xpath("//*[@id='ztdx']"):
             text = each.xpath("./p").xpath('string(.)').extract()
             texts.append(text)
-        docDict['date'] = date
+        docDict['date'] = datetime.strptime(date, "%Y-%m-%d").strftime("%Y-%m-%d %H:%M:%S")
         docDict['title'] = title
         docDict['link'] = link
+        docDict['typeOne'] = '政策文件'
+        docDict['typeTwo'] = '政策文件'
         print(date)
         print(title)
-        print(texts)
-        docDict['text'] = texts
+        #print(texts)
+        docDict['content'] = texts
         item['dic']=docDict
-        #time.sleep(5)
+        time.sleep(5)
         return item
     
     

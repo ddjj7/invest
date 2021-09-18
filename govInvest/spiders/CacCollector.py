@@ -20,7 +20,7 @@ class CacSpider(scrapy.Spider):
         'ITEM_PIPELINES': {'govInvest.pipelines.CacPipeline': 300},
     }
     
-    #只取第一页
+    #只取第一页，这个网站所有列表都只有一页
     def parse(self, response):
         global count
         #endFlag='0'
@@ -29,7 +29,7 @@ class CacSpider(scrapy.Spider):
         
         for each in response.xpath("//*[@id='hideData']/li"):
             articleType = response.xpath("//*[@id='pageName2']/text()").extract()[0].strip()
-            print(type)
+            print(articleType)
             date = each.xpath("./span/text()").extract()[0]
             print(date)
             title = each.xpath("./h3/a/text()").extract()[0]
@@ -67,12 +67,13 @@ class CacSpider(scrapy.Spider):
         text = ''
         for each in response.xpath("//*[@id='BodyLabel']"):
             text = each.xpath("./p").xpath('string(.)').extract()
-            print(text)
-        docDict['date'] = date
+            #print(text)
+        docDict['date'] = datetime.strptime(date, "%Y-%m-%d").strftime("%Y-%m-%d %H:%M:%S")
         docDict['title'] = title
         docDict['link'] = link
-        docDict['articleType'] = articleType
-        docDict['text'] = text
+        docDict['typeOne'] = '政策法规'
+        docDict['typeTwo'] = articleType
+        docDict['content'] = text
         item['dic']=docDict
         time.sleep(5) 
         return item

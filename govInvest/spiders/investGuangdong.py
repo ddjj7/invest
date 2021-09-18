@@ -45,11 +45,11 @@ class InvestGuangdongSpider(scrapy.Spider):
             process = each.xpath("./td[3]/div/text()").extract()[0].strip()
             state = each.xpath("./td[4]/text()").extract()[0].strip()
             date = each.xpath("./td[5]/div/text()").extract()[0].strip()
-            print(projectId)
+            #print(projectId)
             print(projectName)
-            print(link)
-            print(process)
-            print(state)
+            #print(link)
+            #print(process)
+            #print(state)
             print(date)
             time.sleep(0.3) 
             recordDate = datetime.strptime(date, "%Y-%m-%d")
@@ -59,11 +59,11 @@ class InvestGuangdongSpider(scrapy.Spider):
             #print(yesterday)
             if currDate == recordDate:
                 print('currDate == recordDate')
-                continue 
+                #continue 
             if yesterday > recordDate:
-                endFlag='1'
+                #endFlag='1'
                 print('yesterday > recordDate')
-                continue 
+                #continue 
             #do sth. here
             item = GovinvestGuangdongItem()
             investDict = {}
@@ -73,22 +73,23 @@ class InvestGuangdongSpider(scrapy.Spider):
             investDict[u'状态'] = state
             investDict[u'备案通过日期'] = date
             item['dic']=investDict
-            yield item
-            #yield scrapy.Request(self.detail_url.format(id=projectId), callback=self.get_detail,meta={'cookiejar': self.cookie_jar})
+            #yield item
+            yield scrapy.Request(self.detail_url.format(id=projectId), callback=self.get_detail,meta={'cookiejar': self.cookie_jar})
         #https://www.gdtz.gov.cn/tybm/apply3!applyView.action?id=ff8080817b4f9304017b51d97f5f79f3
         #                       /tybm/apply3!applyView.action?id=ff8080817b35eb68017b37fd51f96b1a
         self.count +=1     
-        if self.count<20 and endFlag=='0':
+        if self.count<2 and endFlag=='0':
             print ('go next page ------------------------------'+str(self.count))
-            time.sleep(1)
+            time.sleep(5)
             yield scrapy.FormRequest(self.start_urls[0], formdata = {'page.pageNo':str(self.count)},meta={'cookiejar': self.cookie_jar}, callback=self.parse)
             
             
     def get_detail(self,response):
+        print(response.text)
         item = GovinvestGuangdongItem()
         cookie = response.headers.getlist('Set-Cookie')#[0].split(';')[0]
         print(cookie)
-        print(response.text)
+        #print(response.text)
 #         r = requests.get(response.url)
 #         print(r.text)
         investDict = {}
