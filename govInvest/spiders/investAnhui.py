@@ -86,11 +86,6 @@ class InvestAnhuiSpider(scrapy.Spider):
         projectLegelPerson = response.xpath("//*[@id='tab00']/div[1]/table/tr[2]/td[3]/text()").extract()[0]
         projectLegelPersonValue = commonTool.returnNotNull(response.xpath("//*[@id='tab00']/div[1]/table/tr[2]/td[4]/text()").extract())
          
-        investDict[projectCode] = projectCodeValue
-        investDict[projectName] = projectNameValue
-        investDict[projectType] = projectTypeValue
-        investDict[projectLegelPerson] = projectLegelPersonValue
-         
         #//*[@id="tab00"]/div[2]/div[2]/table/tbody/tr[1]/td[1]
         approveDepartment = response.xpath("//*[@id='tab00']/div[2]/div[2]/table/tr[1]/td[1]/text()").extract()[0]
         approveMatter = response.xpath("//*[@id='tab00']/div[2]/div[2]/table/tr[1]/td[2]/text()").extract()[0]
@@ -103,11 +98,15 @@ class InvestAnhuiSpider(scrapy.Spider):
         approveResultValue = commonTool.returnNotNull(response.xpath("//*[@id='tab00']/div[2]/div[2]/table/tr[2]/td[3]/text()").extract())
         approveTimeValue =  commonTool.returnNotNull(response.xpath("//*[@id='tab00']/div[2]/div[2]/table/tr[2]/td[4]/text()").extract())
         approveNoValue = commonTool.returnNotNull(response.xpath("//*[@id='tab00']/div[2]/div[2]/table/tr[2]/td[5]/span[1]/text()").extract())
-         
+        
+        investDict[approveTime] = approveTimeValue
+        investDict[projectName] = projectNameValue
         investDict[approveDepartment] = approveDepartmentValue
+        investDict[projectLegelPerson] = projectLegelPersonValue
+        investDict[projectCode] = projectCodeValue
+        investDict[projectType] = projectTypeValue
         investDict[approveMatter] = approveMatterValue
         investDict[approveResult] = approveResultValue
-        investDict[approveTime] = approveTimeValue
         investDict[approveNo] = approveNoValue
         item['dic']=investDict
         return item

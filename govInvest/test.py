@@ -11,7 +11,7 @@ import time
 import re
 from datetime import timedelta, datetime
 
-if __name__ == '__main__':
+if __name__ == '__main0__':
 #     print(int(random.random()*9000+1000))
 #     print(int(time.time())*1000)
 #     curTime = str(int(random.random()*9000+1000))+str(int(time.time())*1000)
@@ -66,13 +66,16 @@ if __name__ == '__main__':
     r1 = requests.post(posturl,params=param)
     print(r1.text)
     
-if __name__ == '__main1__':
-    
-    url = 'http://tzxm.jxzwfww.gov.cn/icity/ipro/open/publicity'
-    r = requests.get(url)
-    print(r.text)
-    sig = re.findall(r'var __signature = "(.*)"', r.text)[0]
-    print(sig)
+if __name__ == '__main__':
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36'
+    }
+    url = 'https://www.gdtz.gov.cn/tybm/apply3!searchMore3.action?isCity=false&actionCityId='
+    r = requests.get(url, headers=headers)
+    #print(r.text)
+    url2 = 'https://www.gdtz.gov.cn/tybm/apply3!applyView.action?id=ff8080817bc8f1db017bc9ebcf40654f'
+    r2 = requests.get(url2, headers=headers)
+    print(r2.text)
     
     
     

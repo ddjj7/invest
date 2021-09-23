@@ -54,6 +54,7 @@ class CacSpider(scrapy.Spider):
             add_params['title'] = title
             add_params['link'] = link
             add_params['articleType'] = articleType
+            time.sleep(5)
             yield scrapy.Request(link, callback=self.get_detail,cb_kwargs=add_params)
          
 #         count +=1     

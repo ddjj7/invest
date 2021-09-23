@@ -34,9 +34,8 @@ class InvestJiangxiSpider(scrapy.Spider):
         body = json.loads(response.text)
         for each in body['data']:
             each = each['columns']
-            item = GovinvestJiangxiItem()
-            investDict = {}
             finishDate = each['FINISH_TIME']
+            projectCode = each['PROJECT_CODE']
             recordDate = datetime.strptime(finishDate, "%Y-%m-%d")
             currDate = datetime.strptime(datetime.now().strftime("%Y-%m-%d"), "%Y-%m-%d")
             #print(currDate)
@@ -50,35 +49,12 @@ class InvestJiangxiSpider(scrapy.Spider):
                 endFlag='1'
                 continue 
             
-            state = each['STATE']
-            orgName = each['ORG_NAME']
-            applySubject = each['APPLY_SUBJECT']
-            itemId = each['ITEM_ID']
-            projectCode = each['PROJECT_CODE']
-            projectName = each['PROJECT_NAME']
-            itemName = each['ITEM_NAME']
-            submitTime = each['SUBMIT_TIME']/1000
-            timearr = time.localtime(submitTime)
-            subTime = time.strftime("%Y-%m-%d", timearr)
-            timeLimt = each['TIME_LIMIT']/1000
-            timearr = time.localtime(timeLimt)
-            timeLmt = time.strftime("%Y-%m-%d", timearr)
-            receiveNumber = each['RECEIVE_NUMBER']
-            
-            investDict[u'审批时间'] = finishDate   #审批时间
-            investDict[u'状态'] = state   #状态
-            investDict[u'ORG_NAME'] = orgName  #项目(法人)单位
-            investDict[u'申请事项'] = applySubject   #申请事项
-            investDict[u'ITEM_ID'] = itemId   #ITEM_ID
-            investDict[u'项目代码'] = projectCode  #项目代码
-            investDict[u'项目名称'] = projectName  #项目名称
-            investDict[u'事项审批'] = itemName   #事项审批
-            investDict[u'申请时间'] = subTime   #申请时间
-            investDict[u'审批期限'] = timeLmt   #审批期限
-            investDict[u'RECEIVE_NUMBER'] = receiveNumber  #RECEIVE_NUMBER
-            item['dic']=investDict
-            print(investDict)
-            yield item
+            detailUrl = 'http://tzxm.jxzwfww.gov.cn/icity/api-v2/jxtzxm.app.icity.ipro.IproCmd/getInvestInfoByCodeForOut?s={sig}&t={timestamp}&o={tkey}'
+            detailUrl = detailUrl.format(sig=self.sig,timestamp=self.timestamp,tkey=self.tkey)
+            time.sleep(5) 
+            add_params = {}
+            add_params['finishDate'] = finishDate
+            yield scrapy.FormRequest(detailUrl, formdata = {'projectCode':projectCode}, callback=self.get_detail, cb_kwargs=add_params)
             
         self.count +=1     
         if self.count<50 and endFlag=='0':
@@ -86,11 +62,54 @@ class InvestJiangxiSpider(scrapy.Spider):
             posturl = self.api_url.format(sig=self.sig,timestamp=self.timestamp,tkey=self.tkey)
             #self.initVerifyParam()
             param = {'page': str(self.count), 'rows': "10", 'type': "0", 'projectName': "", 'projectCode': "-"}
-#             print(posturl)
-#             print(param)
             time.sleep(5) 
             yield scrapy.FormRequest(posturl, formdata = param, callback=self.parse)#,dont_filter=True
             
+    def get_detail(self,response,finishDate):
+        #print(response.text)
+        body = json.loads(response.text)
+        item = GovinvestJiangxiItem()
+        investDict = {}
+        projectCode = body['data']['projectCode']
+        #print(projectCode)
+        investDict[u'项目编号'] = projectCode
+        projectName = body['data']['baseInfo']['projectName']
+        #print(projectName)
+        investDict['项目名称'] = projectName
+        investDict['备案时间'] = finishDate
+        #investDict['projectCode'] = projectCode
+        divisionName = body['data']['baseInfo']['divisionName']
+        investDict['建设项目所属区域'] = divisionName
+        placeAreaDetail = body['data']['baseInfo']['placeAreaDetail']
+        investDict['建设地点详情'] = placeAreaDetail
+        try:
+            address = body['data']['baseInfo']['address']
+            investDict['详细地址'] = address
+        except Exception as e:
+            print(e)
+        investment = body['data']['baseInfo']['investment']
+        investDict['项目总投资'] = investment+'万元'
+        projectContent = body['data']['baseInfo']['projectContent']
+        investDict['建设规模及内容'] = projectContent
+        enterpriseName = body['data']['baseInfo']['lerepInfo'][0]['enterpriseName']
+        investDict['建设单位'] = enterpriseName
+        startYear = body['data']['baseInfo']['startYear']
+        investDict['开工时间'] = str(startYear)+'年'
+        endYear = body['data']['baseInfo']['endYear']
+        investDict['竣工时间'] = str(endYear)+'年'
+        #projectContent = body['data']['baseInfo']['projectContent']
+        projectType = body['data']['baseInfo']['projectType']
+        projectTypeCn = ''
+        if projectType=='A00001':
+            projectTypeCn = '审批类'
+        elif projectType=='A00002':
+            projectTypeCn = '核准类'
+        elif projectType=='A00003':
+            projectTypeCn = '备案类'
+        investDict['项目类型'] = projectTypeCn
+        investDict['备案状态'] = '已备案'
+        item['dic']=investDict
+        return item
             
     def initVerifyParam(self):
         verifyParam = cookieTool.getJiangxiCookieParam(self.start_urls[0])

@@ -80,26 +80,26 @@ class InvestHubeiSpider(scrapy.Spider):
         total_money = body['total_money']
         industry_name = body['industry_name']
         
-        investDict[r'项目代码'] = deal_code
-        #investDict[r''] = result
-        investDict[r'申请日期'] = apply_time
-        investDict[r'主要建设规模及内容'] = scale_content
-        investDict[r'申报单位经济类型'] = cor_type
-        investDict[r'建设地点'] = address_detial
-        investDict[r'审核状态'] = state
-        investDict[r'上网模式'] = internet_mode
-        #investDict[r''] = is_foreign
-        investDict[r'单位名称'] = project_dept
-        investDict[r'项目法人/项目业主'] = contact  #项目法人/项目业主
-        investDict[r'建设性质'] = project_type
-        #investDict[r''] = item_person
-        #investDict[r''] = catalog_code
-        investDict[r'计划开工时间'] = project_starttime
-        #investDict[r''] = introduction_use
-        investDict[r'项目名称'] = apply_project_name
-        investDict[r'建设模式'] = construction_mode
-        investDict[r'projectuuid'] = projectuuid
-        investDict[r'项目总投资（万元）'] = total_money
-        investDict[r'项目所属行业'] = industry_name
+        investDict[u'申请日期'] = apply_time
+        investDict[u'项目名称'] = apply_project_name
+        investDict[u'单位名称'] = project_dept
+        investDict[u'项目法人/项目业主'] = contact  #项目法人/项目业主
+        investDict[u'项目代码'] = deal_code
+        investDict[u'建设地点'] = address_detial
+        investDict[u'申报单位经济类型'] = cor_type
+        investDict[u'项目所属行业'] = industry_name
+        investDict[u'项目总投资（万元）'] = total_money
+        investDict[u'建设性质'] = project_type
+        investDict[u'计划开工时间'] = project_starttime
+        investDict[u'审核状态'] = state
+        investDict[u'主要建设规模及内容'] = scale_content
+        
+        
+        
+#         investDict[u'上网模式'] = internet_mode
+#         investDict[u'建设模式'] = construction_mode
+#         investDict[u'projectuuid'] = projectuuid
+        
+        
         item['dic']=investDict
         return item

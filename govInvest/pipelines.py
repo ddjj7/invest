@@ -97,9 +97,9 @@ class GovinvestGuangdongPipeline(object):
         packet = {}
         packet['data'] = dic
         packet['province']='广东'
-        packet['dateItem']='备案通过日期'
-        packet['idItem']='项目编号'
-        packet['companyItem']=''
+        packet['dateItem']='备案申报日期'
+        packet['idItem']='备案项目编号'
+        packet['companyItem']='建设单位'
         # send to java server
         #posturl = 'http://10.47.123.120:6666/cdp-mcrsrv-admin/collect/saveCollectInfo'
         posturl = 'http://127.0.0.1:9090/api/recvScrapy1/'
@@ -115,8 +115,8 @@ class GovinvestJiangxiPipeline(object):
         packet = {}
         packet['data'] = dic
         packet['province']='江西'
-        packet['idItem']='项目代码'
-        packet['companyItem']='ORG_NAME'
+        packet['idItem']='projectCode'
+        packet['companyItem']='enterpriseName'
         # send to java server
         #posturl = 'http://10.47.123.120:6666/cdp-mcrsrv-admin/collect/saveCollectInfo'
         posturl = 'http://127.0.0.1:9090/api/recvScrapy1/'
@@ -131,7 +131,7 @@ class MpsPipeline(object):
         dic = item['dic']
         packet = {}
         packet['data'] = dic
-        packet['source'] = r'公安部'
+        packet['source'] = u'公安部'
         # send to java server
         #posturl = 'http://10.47.123.120:6666/cdp-mcrsrv-admin/collect/saveCollectInfo'
         posturl = 'http://127.0.0.1:9090/api/recvScrapy1/'
@@ -150,7 +150,7 @@ class CacPipeline(object):
         dic = item['dic']
         packet = {}
         packet['data'] = dic
-        packet['source'] = r'网信办'
+        packet['source'] = u'网信办'
         # send to java server
         #posturl = 'http://10.47.123.120:6666/cdp-mcrsrv-admin/collect/saveCollectInfo'
         posturl = 'http://127.0.0.1:9090/api/recvScrapy1/'
@@ -165,7 +165,7 @@ class CbircPipeline(object):
         dic = item['dic']
         packet = {}
         packet['data'] = dic
-        packet['source'] = r'银保监会'
+        packet['source'] = u'银保监会'
         # send to java server
         #posturl = 'http://10.47.123.120:6666/cdp-mcrsrv-admin/collect/saveCollectInfo'
         posturl = 'http://127.0.0.1:9090/api/recvScrapy1/'
@@ -184,7 +184,7 @@ class MiitPipeline(object):
         dic = item['dic']
         packet = {}
         packet['data'] = dic
-        packet['source'] = r'工信部'
+        packet['source'] = u'工信部'
         # send to java server
         #posturl = 'http://10.47.123.120:6666/cdp-mcrsrv-admin/collect/saveCollectInfo'
         posturl = 'http://127.0.0.1:9090/api/recvScrapy1/'

@@ -54,11 +54,12 @@ class InvestJiangsuSpider(scrapy.Spider):
 #                 resultno = resultno[0]
 #             else:
 #                 resultno = 'null'
+            investDict[u'备案时间'] = date    #备案时间
             investDict[u'项目名称'] = title    #项目名称
             investDict[u'申报单位名称'] = name   #申报单位名称
             investDict[u'备案机关'] = department   #备案机关
             investDict[u'备案证号'] = code    #备案证号
-            investDict[u'备案时间'] = date    #备案时间
+            
             item['dic']=investDict
             yield item
             

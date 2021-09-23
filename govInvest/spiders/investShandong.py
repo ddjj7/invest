@@ -74,14 +74,15 @@ class InvestShandongSpider(scrapy.Spider):
             elif projectType == 'A00003':
                 projectType= u'备案类项目'
             
-            investDict[u'项目代码'] = projectCode   #项目代码
+            investDict[u'申报时间'] = applyDate   #申报时间
             investDict[u'项目名称'] = projectName   #项目名称
             investDict[u'项目(法人)单位'] = enterpriseName  #项目(法人)单位
             investDict[u'项目法人'] = contactName   #项目法人
+            investDict[u'项目代码'] = projectCode   #项目代码
             investDict[u'项目阶段'] = u'已赋码'   #项目阶段  99=已赋码
             investDict[u'seqId'] = seqId
             investDict[u'项目类型'] = projectType  #项目类型
-            investDict[u'申报时间'] = applyDate   #申报时间
+            
             item['dic']=investDict
             yield item
             

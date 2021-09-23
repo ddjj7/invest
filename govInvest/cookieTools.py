@@ -148,9 +148,9 @@ def getJiangxiCookieParam(url):
             tkeyIndex = i
     print(tkey)
     
-    print('s='+sig)
-    print('t='+timestamp)
-    print('o='+tkey)
+#     print('s='+sig)
+#     print('t='+timestamp)
+#     print('o='+tkey)
     
     return sig,timestamp,tkey
 
