@@ -11,6 +11,7 @@ class InvestZhejiangSpider(scrapy.Spider):
     allowed_domains = ['tzxm.zjzwfw.gov.cn']
     start_urls = ['https://tzxm.zjzwfw.gov.cn/tzxmweb/zwtpages/resultsPublicity/notice_of_publicity_new.html?page=1']
     posturl = 'https://tzxm.zjzwfw.gov.cn/publicannouncement.do?method=queryItemList_new'
+    pdfurl = 'https://tzxm.zjzwfw.gov.cn/publicannouncement.do?method=downFile&sendid={sendid}&flag=0'
     custom_settings = {
         'ITEM_PIPELINES': {'govInvest.pipelines.GovinvestZhejiangPipeline': 300},
     }
@@ -50,11 +51,11 @@ class InvestZhejiangSpider(scrapy.Spider):
             yesterday = datetime.strptime((datetime.today()+ timedelta(-1)).strftime("%Y-%m-%d"), "%Y-%m-%d")
             if currDate == recordDate:
                 print('currDate == recordDate')
-                continue 
+                #continue 
             if yesterday > recordDate:
                 print('yesterday > recordDate')
-                endFlag='1'
-                continue 
+                #endFlag='1'
+                #continue 
             
             investDict['办理时间'] = each['DEAL_TIME']  #办理时间
             investDict['项目名称'] = each['apply_project_name']  #项目名称
@@ -64,12 +65,13 @@ class InvestZhejiangSpider(scrapy.Spider):
             investDict['管理部门'] = each['DEPT_NAME']  #管理部门
             investDict['projectuuid'] = each['projectuuid']  
             investDict['SENDID'] = each['SENDID']  
+            investDict['link'] = self.pdfurl.format(sendid=each['SENDID'])
             item['dic']=investDict
             yield item
          
         self.count +=1     
         print ('go next page ------------------------------'+str(self.count))
-        if self.count<100 and endFlag=='0':
+        if self.count<4 and endFlag=='0':
             self.packet['pageNo']= str(self.count)
             yield scrapy.FormRequest(self.posturl, formdata = self.packet, callback=self.parse,headers=self.headers)
              
