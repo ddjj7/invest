@@ -1,0 +1,115 @@
+[]<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="SiteName" content="浙江省人民政府>浙江政务服务网>浙江省投资项目在线审批监管平台  工程建设项目审批监管系统"/>
+<meta name="SiteDomain"content="tzxm.zjzwfw.gov.cn"/> 
+<meta name="SiteIDCode" content="3300000069"/>
+<meta name="ColumnName" content="审批和监管事项办理结果公示"/>
+<meta name="ColumnDescription" content="审批和监管事项办理结果公示"/> 
+<meta name="ColumnKeywords" content="浙江省，投资项目，项目办理结果，公示公告"/> 
+<meta name="ColumnType" content="结果公示"/>
+<script type="text/javascript" src="../js/jquery-1.11.2.min.js"></script>
+<script src="../common/common.js"></script>
+<script src="notice_of_publicity_new.js?t=1"></script>
+<link type="text/css" rel="stylesheet" href="../../css/zjtzxmcss/style_new.css"></link>
+<link type="text/css" rel="stylesheet" href="../css/style.css"></link>
+<link type="text/css" rel="stylesheet" href="../css/jquery.idcode.css"></link>
+<script type="text/javascript" src="../../../tzxmweb/js/layer/layer.js"></script>
+<script type="text/javascript" language="../../../tzxmweb/Resources/js/popup_layer.js"></script>
+
+<title>浙江省投资项目在线审批监管平台</title>
+<style> 
+#notice_search_btn{float:right;margin:5px 20px 0 0;}
+</style>
+</head>
+<body>
+<div id="header">
+		<div class="hlHeaderBox pageHeader" style="background:#2077bd">
+			<div class="zwLayout">
+				<div class="hlHeader clear" >
+					<div class="hlHeaLogo1 fl" style="margin-top: 15px; margin-left: -30px;" onclick="window.open('http://www.zjzwfw.gov.cn/')">
+						<img  style="width: 75px;height: 75px;"    src="../../zjtzxmpages/base/gh_img.png" />
+					</div>
+					<div class="hlHeaLogo fl" onclick="window.open('http://www.zjzwfw.gov.cn/')"><embed src="../../zjtzxmpages/base/logoWhite1.svg" /></div>
+				</div>
+			</div>
+		</div>
+	</div>	
+<div class="main_all">
+	<div class="ucc-nav">
+		<span><a href="../../../indexzj.jsp">首页</a></span>
+		<label>&gt;</label><span class="curColor"><label>审批和监管事项办理结果公示</label></span>
+	</div> 
+	<div class="notice_of_publicity">
+		<div class="panel panel-default query-condition">
+		  <div class="panel-heading">
+		    <!-- <span class="query-title">信息筛选</span> -->
+		    <span class="query-subtitle">审批和监管事项办理结果公示</span>
+		    <span class="query-count-info">共<span class="query-count"></span>条记录</span>
+		  </div>
+		  <div class="panel-body query-condition-body">
+		    <div class="query-condition-container">
+		    	<div class="row query-condition-main">
+		    		<div class="col-xs-12 col-sm-2 query-condition-name">项目代码</div>
+		    		<div class="col-xs-12 col-sm-10 query-condition-component">
+		    			<input id="projectUuid" class="form-control" placeholder="请输入项目代码" />
+					</div>
+		    	</div>
+		    	<div class="row query-condition-main">
+		    		<div class="col-xs-12 col-sm-2 query-condition-name">项目名称</div>
+		    		<div class="col-xs-12 col-sm-10 query-condition-component">
+						<input id="projectName" class="form-control" placeholder="请输入项目名称" />
+					</div>
+		    	</div>
+		    	<div class="row query-condition-main">
+		    		<div class="col-xs-12 col-sm-2 query-condition-name">所属区划-省市</div>
+		    		<div class="col-xs-12 col-sm-10 query-condition-component code_list">
+		    			<ul id="cityList">
+		    			</ul>
+		            </div>
+		    	</div>
+		    	<div class="row query-condition-main">
+		    		<div class="col-xs-12 col-sm-2 query-condition-name">所属区划-区县</div>
+		    		<div class="col-xs-12 col-sm-10 query-condition-component code_list">
+		    			<ul id="district_and_county">
+		    		    	<li class="cur"><a id="3300">省本级</a></li>
+		    			</ul>
+					</div>
+		    	</div>
+		    </div>
+		    <button type="button" class="btn btn-info" id="notice_search_btn" onclick="noticeOfPublicity();">查询</button>
+		  </div>
+		</div>
+		<table id="bgx_JL" class="index-table">
+			<thead id="bgx_thead">
+			<tr>
+				<th style="text-align:center;width:25%;">项目代码/名称</th>
+				<!--  <th style="text-align:center;width:25%;">项目名称</th>-->
+				<th style="text-align:center;width:12.5%;">审批监管事项</th>
+				<th style="text-align:center;width:10%;">管理部门</th>
+				<th style="text-align:center;width:7.5%;">办理状态</th>
+				<th style="text-align:center;width:10%;">办理时间</th>
+			</tr>
+			</thead>
+			<tbody id="bgx_tbody">
+			</tbody>
+		</table>
+		<div class="ucPageBox clear" id="pageBox">
+			<div class="ucPageNum">
+				<span>共</span><strong></strong><span>条记录</span>
+			</div>
+			<div class="ucPageFlip">
+				<a class="filp" href="javascript:void(0)" onclick="goPage('first');">首页</a>
+				<a class="filp" href="javascript:void(0)" onclick="goPage('pre');">上一页</a>
+				<a class="cur">1</a>
+				<a class="filp filend" href="javascript:void(0)" onclick="goPage('next');">下一页</a>
+				<a class="filp" href="javascript:void(0)" onclick="goPage('last');">末页</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="footer"></div>
+</body>
+</html>

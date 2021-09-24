@@ -182,6 +182,20 @@ def getShandongCookieParam(url):
     
     return sig,timestamp
 
+'''
+浙江政府投资
+'''
+def getZhejiangCookieParam(url):
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36'
+    }
+    geturl = 'https://tzxm.zjzwfw.gov.cn/tzxmweb/zwtpages/resultsPublicity/notice_of_publicity_new.html?page=1'
+    r = requests.get(geturl,headers=headers, verify=False)
+    print(r.status_code)
+    cookiejar = r.cookies
+    cookiedict = requests.utils.dict_from_cookiejar(cookiejar)
+    return cookiedict
+
 
 if __name__ == '__main__':
 #     headers=getMpsHeaderWithCookie('https://www.miit.gov.cn/zwgk/wjgs/index.html')

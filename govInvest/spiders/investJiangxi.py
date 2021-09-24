@@ -58,7 +58,7 @@ class InvestJiangxiSpider(scrapy.Spider):
             yield scrapy.FormRequest(detailUrl, formdata = {'projectCode':projectCode}, callback=self.get_detail, cb_kwargs=add_params)
             
         self.count +=1     
-        if self.count<50 and endFlag=='0':
+        if self.count<100 and endFlag=='0':
             print ('go next page ------------------------------'+str(self.count))
             posturl = self.api_url.format(sig=self.sig,timestamp=self.timestamp,tkey=self.tkey)
             #self.initVerifyParam()

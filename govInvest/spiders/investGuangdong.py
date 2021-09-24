@@ -62,7 +62,7 @@ class InvestGuangdongSpider(scrapy.Spider):
             #time.sleep(5)
             yield scrapy.Request(link, callback=self.get_detail,headers=headers)
         self.count +=1     
-        if self.count<50 and endFlag=='0':
+        if self.count<100 and endFlag=='0':
             print ('go next page ------------------------------'+str(self.count))
             #time.sleep(5)
             yield scrapy.FormRequest(self.start_urls[0], formdata = {'page.pageNo':str(self.count)},headers=headers, callback=self.parse)

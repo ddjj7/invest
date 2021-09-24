@@ -8,9 +8,11 @@ import requests
 import json 
 import random
 import time
+import io
 import re
 from datetime import timedelta, datetime
 import govInvest.cookieTools as cookieTool
+from requests.cookies import RequestsCookieJar
 
 if __name__ == '__main0__':
 #     print(int(random.random()*9000+1000))
@@ -68,24 +70,41 @@ if __name__ == '__main0__':
     print(r1.text)
     
 if __name__ == '__main__':
-    verifyParam = cookieTool.getShandongCookieParam('http://221.214.94.51:8081/icity/ipro/projectlist')
-    sig = verifyParam[0]
-    timestamp = verifyParam[1]
-    t = time.time()
-    posturl = 'http://221.214.94.51:8081/icity/api-v2/app.icity.ipro.IproCmd/getProjectList'
-    headers = {'Content-Type': 'application/json'}
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36'
+    }
+    geturl = 'https://tzxm.zjzwfw.gov.cn/tzxmweb/zwtpages/resultsPublicity/notice_of_publicity_new.html?page=1'
+    r = requests.get(geturl,headers=headers, verify=False)
+    print(r.status_code)
+#     print(r.text)
+#     with io.open('./zj.txt','a',encoding='utf-8')as f:
+#         f.write(r.text)
+    cookiejar = r.cookies
+    cookiedict = requests.utils.dict_from_cookiejar(cookiejar)
+    print(cookiedict)
+    posturl = 'https://tzxm.zjzwfw.gov.cn/publicannouncement.do?method=queryItemList_new'
+    #headers = {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
     packet = {}
-    packet['page'] = 1
-    packet['rows']='10'
-    packet['projectcode']=''
-    packet['projectname']=''
-    packet['contractor']=''
-    packet['projecttype']=''
-    data = json.dumps(packet)
-    posturl = posturl+'?s='+sig+'&t='+timestamp
-    r = requests.post(posturl, data=data, headers=headers)
+    packet['pageFlag'] = 1
+    packet['pageNo']= 0
+    packet['area_code']= ''
+    packet['area_flag']= 1
+    packet['deal_code']= ''
+    packet['item_name']= ''
+    headers={
+        'accept': 'application/json, text/javascript, */*; q=0.01',
+        'accept-encoding': 'gzip, deflate, br',
+        'accept-language': 'zh-CN,zh;q=0.9',
+        'cookie': 'JSESSIONID='+cookiedict['JSESSIONID']+'; SERVERID='+cookiedict['SERVERID'],
+        'referer': 'https://tzxm.zjzwfw.gov.cn/tzxmweb/zwtpages/resultsPublicity/notice_of_publicity_new.html?page=1',
+        'sec-fetch-mode': 'cors',
+        "sec-fetch-site": 'same-origin',
+        'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.107 Safari/537.36',
+        'x-requested-with': 'XMLHttpRequest'
+    }
+    r = requests.post(posturl, data=packet, headers=headers, verify=False)#,cookies=cookie_jar, verify=False, allow_redirects=True
+    print(r.status_code)
     print(r.text)
-    body = json.loads(r.text)
     
     
     

@@ -82,7 +82,7 @@ class InvestShandongSpider(scrapy.Spider):
             yield item
             
         self.count +=1     
-        if self.count<50 and endFlag=='0':
+        if self.count<100 and endFlag=='0':
             print ('go next page ------------------------------'+str(self.count))
             self.packet['page'] = self.count
             self.initVerifyParam()

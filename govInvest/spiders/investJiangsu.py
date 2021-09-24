@@ -65,7 +65,7 @@ class InvestJiangsuSpider(scrapy.Spider):
             yield item
             
         count +=1     
-        if count<30 and endFlag=='0':
+        if count<100 and endFlag=='0':
             print ('go next page ------------------------------'+str(count))
             #time.sleep(5)
             yield scrapy.FormRequest(nextUrl, formdata = {'pageNo':str(count)}, callback=self.parse)
