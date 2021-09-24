@@ -4,7 +4,7 @@ from govInvest.items import CbircItem
       
 import json
 import re
-import time
+#import time
 from datetime import timedelta, datetime
 from scrapy.http import HtmlResponse
 
@@ -84,7 +84,7 @@ class CbircSpider(scrapy.Spider):
             docDict['typeOne'] = '政务信息'
             docDict['typeTwo'] = articleType
             add_params['docDict'] = docDict
-            time.sleep(5)
+            #time.sleep(5)
             yield scrapy.Request(jsonUrl, callback=self.get_detail,cb_kwargs=add_params)
             
     def get_detail(self,response,docDict):
@@ -97,7 +97,7 @@ class CbircSpider(scrapy.Spider):
         #print(article)
         docDict['content'] = article
         item['dic']=docDict
-        time.sleep(5)
+        #time.sleep(5)
         return item     
     
     

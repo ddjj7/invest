@@ -117,7 +117,7 @@ class MiitSpider(scrapy.Spider):
         #政策解读18页，文件公式106页，需要首次进行铺底
         if count<5 and endFlag=='0':
             print ('go next '+articleType+' article page ------------------------------'+str(count))
-            time.sleep(5)
+            #time.sleep(5)
             yield scrapy.Request(response.url+'?a='+str(count), callback=self.parse,headers=headers)
     #等待调试中   
     def parse_fileRepo(self, response, params):
@@ -178,7 +178,7 @@ class MiitSpider(scrapy.Spider):
             params['p'] = str(self.filePgCount[params['q']])
             add_params = {}
             add_params['params'] = params
-            time.sleep(5)
+            #time.sleep(5)
             yield scrapy.Request(url, callback=self.parse_fileRepo, headers=headers, cb_kwargs=add_params)
             
              
@@ -199,7 +199,7 @@ class MiitSpider(scrapy.Spider):
         docDict['typeOne'] = '政务公开'
         docDict['typeTwo'] = articleType
         item['dic']=docDict
-        time.sleep(5)
+        #time.sleep(5)
         return item
     
     def genParams(self):

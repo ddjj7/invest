@@ -154,6 +154,34 @@ def getJiangxiCookieParam(url):
     
     return sig,timestamp,tkey
 
+'''
+山东政府投资
+'''
+def getShandongCookieParam(url):
+    chars = '0123456789abcdef'
+    r = requests.get(url)
+    sig = re.findall(r'var __signature = "(.*)"', r.text)[0]
+    print(sig)
+    
+    key = ''
+    keyIndex = -1
+    for i in range(0,6):
+        c = sig[keyIndex+1]
+        #print(c)
+        key+=c
+        keyIndex = chars.find(c)
+        if keyIndex <0 or keyIndex >= len(sig):
+            keyIndex = i
+    timestamp = str(int(random.random()*9000 + 1000)) + '_' + key + '_' + str(int(time.time())*1000).replace('+','-')
+    print(timestamp)
+    
+    
+#     print('s='+sig)
+#     print('t='+timestamp)
+#     print('o='+tkey)
+    
+    return sig,timestamp
+
 
 if __name__ == '__main__':
 #     headers=getMpsHeaderWithCookie('https://www.miit.gov.cn/zwgk/wjgs/index.html')
@@ -184,10 +212,8 @@ if __name__ == '__main__':
 #     with io.open('./text.txt','a',encoding='utf-8')as f:
 #         f.write(res3.text)
 #     ==========================================
-    headers = getAHHeaderWithCookie('http://tzxm.ahzwfw.gov.cn/portalopenPublicInformation.do?method=queryExamineAll')
+    headers = getShandongCookieParam('http://221.214.94.51:8081/icity/ipro/projectlist')
     print(headers)
-    r = requests.get('http://tzxm.ahzwfw.gov.cn/portalopenPublicInformation.do?method=queryExamineAll', headers=headers)
-    print(r.text)
 
 
 

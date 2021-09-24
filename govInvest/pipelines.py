@@ -27,7 +27,7 @@ class GovinvestAnhuiPipeline(object):
         packet['province']='安徽'
         packet['dateItem']='审批时间'
         packet['idItem']='项目代码'
-        packet['companyItem']=''
+        packet['companyItem']='项目法人单位'
         # send to java server
         #posturl = 'http://10.47.123.120:6666/cdp-mcrsrv-admin/collect/saveCollectInfo'
         posturl = 'http://127.0.0.1:9090/api/recvScrapy1/'
@@ -115,8 +115,9 @@ class GovinvestJiangxiPipeline(object):
         packet = {}
         packet['data'] = dic
         packet['province']='江西'
-        packet['idItem']='projectCode'
-        packet['companyItem']='enterpriseName'
+        packet['dateItem']='备案时间'
+        packet['idItem']='项目编号'
+        packet['companyItem']='建设单位'
         # send to java server
         #posturl = 'http://10.47.123.120:6666/cdp-mcrsrv-admin/collect/saveCollectInfo'
         posturl = 'http://127.0.0.1:9090/api/recvScrapy1/'

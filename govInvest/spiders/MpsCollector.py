@@ -3,7 +3,7 @@ import scrapy
 from scrapy.http import Request
 from govInvest.items import MpsItem
       
-import time
+#import time
 from datetime import timedelta, datetime
 
 import govInvest.cookieTools as cookieTool
@@ -68,7 +68,7 @@ class MpsSpider(scrapy.Spider):
             add_params['date'] = date
             add_params['title'] = title
             add_params['link'] = link
-            time.sleep(5)
+            #time.sleep(5)
             yield scrapy.Request(link, callback=self.get_detail,headers=headers,cb_kwargs=add_params)
          
         self.count +=1     
@@ -79,7 +79,7 @@ class MpsSpider(scrapy.Spider):
         print(nextUrl)
         if self.count<2 and endFlag=='0':
             #pass
-            time.sleep(5)
+            #time.sleep(5)
             yield scrapy.Request(nextUrl, callback=self.parse_second,headers=headers)
             
     '''
@@ -108,7 +108,7 @@ class MpsSpider(scrapy.Spider):
         #实际超过40页，不到50页，全量第一次采集，后续不需要了
         if self.count<50 and endFlag=='0':
             #pass
-            time.sleep(5)
+            #time.sleep(5)
             yield scrapy.Request(nextUrl, callback=self.parse_second,headers=headers)
              
     def get_detail(self,response,date,title,link):
@@ -131,7 +131,7 @@ class MpsSpider(scrapy.Spider):
         #print(texts)
         docDict['content'] = texts
         item['dic']=docDict
-        time.sleep(5)
+        #time.sleep(5)
         return item
     
     

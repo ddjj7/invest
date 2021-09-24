@@ -3,7 +3,7 @@ import scrapy
 from govInvest.items import GovinvestJiangsuItem
 
 #import sys
-import time
+#import time
 from datetime import timedelta, datetime
 
 import govInvest.commonTools as tool
@@ -16,6 +16,7 @@ count = 0
 class InvestJiangsuSpider(scrapy.Spider):
     name = 'investJiangsuSpider'
     #allowed_domains = ['222.190.131.17:8075']
+    #jszwfw.com.cn
     start_urls = ['http://222.190.131.17:8075/portalopenPublicInformation.do?method=querybeianExamineAll']
     custom_settings = {
         'ITEM_PIPELINES': {'govInvest.pipelines.GovinvestJiangsuPipeline': 300},
@@ -31,7 +32,7 @@ class InvestJiangsuSpider(scrapy.Spider):
             item = GovinvestJiangsuItem()
             investDict = {}
             date = each.xpath("./td[5]/text()").extract()[0]
-            time.sleep(0.3) 
+            #time.sleep(0.3) 
             recordDate = datetime.strptime(date, "%Y/%m/%d")
             currDate = datetime.strptime(datetime.now().strftime("%Y-%m-%d"), "%Y-%m-%d")
             #print(currDate)
@@ -66,6 +67,6 @@ class InvestJiangsuSpider(scrapy.Spider):
         count +=1     
         if count<30 and endFlag=='0':
             print ('go next page ------------------------------'+str(count))
-            time.sleep(5)
+            #time.sleep(5)
             yield scrapy.FormRequest(nextUrl, formdata = {'pageNo':str(count)}, callback=self.parse)
             

@@ -2,7 +2,7 @@
 import scrapy
 from govInvest.items import CacItem
       
-import time
+#import time
 from datetime import timedelta, datetime
 
 count=0
@@ -54,7 +54,7 @@ class CacSpider(scrapy.Spider):
             add_params['title'] = title
             add_params['link'] = link
             add_params['articleType'] = articleType
-            time.sleep(5)
+            #time.sleep(5)
             yield scrapy.Request(link, callback=self.get_detail,cb_kwargs=add_params)
          
 #         count +=1     
@@ -76,7 +76,7 @@ class CacSpider(scrapy.Spider):
         docDict['typeTwo'] = articleType
         docDict['content'] = text
         item['dic']=docDict
-        time.sleep(5) 
+        #time.sleep(5) 
         return item
         
         

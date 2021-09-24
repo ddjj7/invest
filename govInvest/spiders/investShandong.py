@@ -1,42 +1,37 @@
 # -*- coding: utf-8 -*-
 import scrapy
 from govInvest.items import GovinvestShandongItem
-
-import time
+from scrapy.http import JsonRequest
 from datetime import timedelta, datetime
-import requests 
+import govInvest.cookieTools as cookieTool
 import json
-
-count = 1
 
 #山东
 class InvestShandongSpider(scrapy.Spider):
+    sig = ''
+    timestamp = ''
+    count = 1
+    packet = {}
     name = 'investShandongSpider'
     #allowed_domains = ['221.214.94.51:8081']
-    start_urls = ['http://tzxm.jxzwfww.gov.cn/icity/ipro/open/publicity']
+    posturl = 'http://221.214.94.51:8081/icity/api-v2/app.icity.ipro.IproCmd/getProjectList?s={sig}&t={timestamp}'
+    #sdzwfw.com.cn
+    start_urls = ['http://221.214.94.51:8081/icity/ipro/projectlist']
     custom_settings = {
         'ITEM_PIPELINES': {'govInvest.pipelines.GovinvestShandongPipeline': 300},
     }
 
+    def start_requests(self):
+        self.initVerifyParam()
+        self.initParam()
+        posturl = self.posturl.format(sig=self.sig,timestamp=self.timestamp)
+        yield JsonRequest(posturl, data=self.packet, callback=self.parse)
+
     def parse(self, response):
-        global count
+        print(response.text)
         endFlag='0'
-        posturl = 'http://221.214.94.51:8081/icity/api-v2/app.icity.ipro.IproCmd/getProjectList'
-        t = time.time()
-        print ('$$$$$$$$$$$$$$$$$$'+str(count)+'$$$$$$$$$$$$$$$$$$')
-        #yield scrapy.FormRequest(nextUrl, formdata = {'pageNo':'2'}, callback=self.parse)
-        headers = {'Content-Type': 'application/json'}
-        packet = {}
-        packet['page'] = count
-        packet['limit']=10
-        packet['projectcode']=''
-        packet['projectname']=''
-        packet['contractor']=''
-        packet['projecttype']=''
-        data = json.dumps(packet)
-        posturl = posturl+'?s=eb54861620379457861&t=7045_e72466_'+str(int(round(t * 1000)))
-        r = requests.post(posturl, data=data, headers=headers)
-        body = json.loads(r.text)
+        print ('$$$$$$$$$$$$$$$$$$'+str(self.count)+'$$$$$$$$$$$$$$$$$$')
+        body = json.loads(response.text)
         for each in body['data']:
             item = GovinvestShandongItem()
             investDict = {}
@@ -50,8 +45,8 @@ class InvestShandongSpider(scrapy.Spider):
                 print('currDate == recordDate')
                 continue 
             if yesterday > recordDate:
-                endFlag='1'
                 print('yesterday > recordDate')
+                endFlag='1'
                 continue 
             
             projectCode = each['PROJECT_CODE']
@@ -86,10 +81,25 @@ class InvestShandongSpider(scrapy.Spider):
             item['dic']=investDict
             yield item
             
-        count +=1     
-        if count<50 and endFlag=='0':
-            print ('go next page ------------------------------'+str(count))
-            time.sleep(5) 
-            startUrl = 'http://221.214.94.51:8081/icity/ipro/projectlist'  #没用
-            yield scrapy.FormRequest(startUrl, formdata = {'pageNo':str(count)}, callback=self.parse)
+        self.count +=1     
+        if self.count<50 and endFlag=='0':
+            print ('go next page ------------------------------'+str(self.count))
+            self.packet['page'] = self.count
+            self.initVerifyParam()
+            posturl = self.posturl.format(sig=self.sig,timestamp=self.timestamp)
+            print(posturl)
+            yield JsonRequest(posturl, data=self.packet, callback=self.parse)
             
+             
+    def initVerifyParam(self):
+        verifyParam = cookieTool.getShandongCookieParam(self.start_urls[0])
+        self.sig = verifyParam[0]
+        self.timestamp = verifyParam[1]
+        
+    def initParam(self):
+        self.packet['page'] = 1
+        self.packet['limit'] = 10
+        self.packet['projectcode'] = ''
+        self.packet['projectname'] = ''
+        self.packet['contractor'] = ''
+        self.packet['projecttype'] = ''

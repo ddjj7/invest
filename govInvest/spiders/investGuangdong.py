@@ -3,7 +3,7 @@ import scrapy
 from govInvest.items import GovinvestGuangdongItem
 
 #import sys
-import time
+#import time
 from datetime import timedelta, datetime
 import govInvest.commonTools as commonTool
 
@@ -47,7 +47,7 @@ class InvestGuangdongSpider(scrapy.Spider):
             #state = each.xpath("./td[4]/text()").extract()[0].strip()
             date = each.xpath("./td[5]/div/text()").extract()[0].strip()
             print(date)
-            time.sleep(0.3) 
+            #time.sleep(0.3) 
             recordDate = datetime.strptime(date, "%Y-%m-%d")
             currDate = datetime.strptime(datetime.now().strftime("%Y-%m-%d"), "%Y-%m-%d")
             yesterday = datetime.strptime((datetime.today()+ timedelta(-1)).strftime("%Y-%m-%d"), "%Y-%m-%d")
@@ -59,12 +59,12 @@ class InvestGuangdongSpider(scrapy.Spider):
                 continue 
                 print('yesterday > recordDate')
             
-            time.sleep(5)
+            #time.sleep(5)
             yield scrapy.Request(link, callback=self.get_detail,headers=headers)
         self.count +=1     
         if self.count<50 and endFlag=='0':
             print ('go next page ------------------------------'+str(self.count))
-            time.sleep(5)
+            #time.sleep(5)
             yield scrapy.FormRequest(self.start_urls[0], formdata = {'page.pageNo':str(self.count)},headers=headers, callback=self.parse)
             
             

@@ -10,6 +10,7 @@ import random
 import time
 import re
 from datetime import timedelta, datetime
+import govInvest.cookieTools as cookieTool
 
 if __name__ == '__main0__':
 #     print(int(random.random()*9000+1000))
@@ -67,15 +68,24 @@ if __name__ == '__main0__':
     print(r1.text)
     
 if __name__ == '__main__':
-    headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36'
-    }
-    url = 'https://www.gdtz.gov.cn/tybm/apply3!searchMore3.action?isCity=false&actionCityId='
-    r = requests.get(url, headers=headers)
-    #print(r.text)
-    url2 = 'https://www.gdtz.gov.cn/tybm/apply3!applyView.action?id=ff8080817bc8f1db017bc9ebcf40654f'
-    r2 = requests.get(url2, headers=headers)
-    print(r2.text)
+    verifyParam = cookieTool.getShandongCookieParam('http://221.214.94.51:8081/icity/ipro/projectlist')
+    sig = verifyParam[0]
+    timestamp = verifyParam[1]
+    t = time.time()
+    posturl = 'http://221.214.94.51:8081/icity/api-v2/app.icity.ipro.IproCmd/getProjectList'
+    headers = {'Content-Type': 'application/json'}
+    packet = {}
+    packet['page'] = 1
+    packet['rows']='10'
+    packet['projectcode']=''
+    packet['projectname']=''
+    packet['contractor']=''
+    packet['projecttype']=''
+    data = json.dumps(packet)
+    posturl = posturl+'?s='+sig+'&t='+timestamp
+    r = requests.post(posturl, data=data, headers=headers)
+    print(r.text)
+    body = json.loads(r.text)
     
     
     

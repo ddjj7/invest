@@ -4,11 +4,11 @@ from scrapy.http import Request
 from govInvest.items import GovinvestAnhuiItem
       
 #import sys
-import time
+#import time
 from datetime import timedelta, datetime
 
 import govInvest.commonTools as commonTool
-import govInvest.cookieTools as cookieTool
+#import govInvest.cookieTools as cookieTool
 
 # reload(sys)
 # sys.setdefaultencoding("utf-8")
@@ -28,14 +28,17 @@ class InvestAnhuiSpider(scrapy.Spider):
     def start_requests(self):
         global headers
         if not headers:
-            headers = cookieTool.getAHHeaderWithCookie(self.start_urls[0])
+            #headers = cookieTool.getAHHeaderWithCookie(self.start_urls[0])
+            headers = {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36'
+            }
         yield Request(self.start_urls[0],headers=headers, callback=self.parse)
               
     def parse(self, response):
         global count
         endFlag='0'
         print ('$$$$$$$$$$$$$$$$$$'+str(count)+'$$$$$$$$$$$$$$$$$$')
-        print(response.text)
+        #print(response.text)
         for each in response.xpath("//*[@id='publicInformationForm']/tr"):
             date = each.xpath("./td[5]/text()").extract()[0]
             result = each.xpath("./td[4]/text()").extract()[0]
@@ -43,7 +46,7 @@ class InvestAnhuiSpider(scrapy.Spider):
             link = rawlink.replace('window.open(\'','http://tzxm.ahzwfw.gov.cn')
             index = len(link)
             link = link[0:index-2]
-            time.sleep(0.3) 
+            #time.sleep(0.3) 
             recordDate = datetime.strptime(date, "%Y/%m/%d")
             #print(recordDate)
             currDate = datetime.strptime(datetime.now().strftime("%Y-%m-%d"), "%Y-%m-%d")
@@ -59,6 +62,7 @@ class InvestAnhuiSpider(scrapy.Spider):
                 continue 
             if result !=u'批复':
                 continue
+            #time.sleep(5)
             yield scrapy.Request(link, callback=self.get_detail,headers=headers)
          
         count +=1     
@@ -68,6 +72,7 @@ class InvestAnhuiSpider(scrapy.Spider):
         print ('go next page ------------------------------'+str(count))
         nextUrl = 'http://tzxm.ahzwfw.gov.cn/portalopenPublicInformation.do?method=queryExamineAll'
         if count<50 and endFlag=='0':
+            #time.sleep(5)
             yield scrapy.FormRequest(nextUrl, formdata = {'pageNo':str(count)}, callback=self.parse,headers=headers)
              
     def get_detail(self,response):
@@ -99,15 +104,15 @@ class InvestAnhuiSpider(scrapy.Spider):
         approveTimeValue =  commonTool.returnNotNull(response.xpath("//*[@id='tab00']/div[2]/div[2]/table/tr[2]/td[4]/text()").extract())
         approveNoValue = commonTool.returnNotNull(response.xpath("//*[@id='tab00']/div[2]/div[2]/table/tr[2]/td[5]/span[1]/text()").extract())
         
-        investDict[approveTime] = approveTimeValue
-        investDict[projectName] = projectNameValue
-        investDict[approveDepartment] = approveDepartmentValue
-        investDict[projectLegelPerson] = projectLegelPersonValue
-        investDict[projectCode] = projectCodeValue
-        investDict[projectType] = projectTypeValue
-        investDict[approveMatter] = approveMatterValue
-        investDict[approveResult] = approveResultValue
-        investDict[approveNo] = approveNoValue
+        investDict[approveTime] = approveTimeValue  #审批时间
+        investDict[projectName] = projectNameValue  #项目名称
+        investDict[projectLegelPerson] = projectLegelPersonValue  #项目法人单位
+        investDict[approveDepartment] = approveDepartmentValue  #审批部门
+        investDict[projectCode] = projectCodeValue  #项目代码
+        investDict[projectType] = projectTypeValue  #项目类型
+        investDict[approveMatter] = approveMatterValue  #审批事项
+        investDict[approveResult] = approveResultValue  #审批结果
+        investDict[approveNo] = approveNoValue  #审批文号
         item['dic']=investDict
         return item
     

@@ -2,7 +2,7 @@
 import scrapy
 from govInvest.items import GovinvestHubeiItem
 
-import time
+#import time
 from datetime import timedelta, datetime
 import json
 
@@ -49,7 +49,7 @@ class InvestHubeiSpider(scrapy.Spider):
         self.count +=1     
         if self.count<30 and endFlag=='0':
             print ('go next page ------------------------------'+str(self.count))
-            time.sleep(5) 
+            #time.sleep(5) 
             yield scrapy.FormRequest(self.start_urls[0], formdata = {'pageNo':str(self.count)}, callback=self.parse)
             
 
