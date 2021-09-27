@@ -65,7 +65,7 @@ class InvestZhejiangSpider(scrapy.Spider):
             investDict['管理部门'] = each['DEPT_NAME']  #管理部门
             investDict['projectuuid'] = each['projectuuid']  
             investDict['SENDID'] = each['SENDID']  
-            investDict['link'] = self.pdfurl.format(sendid=each['SENDID'])
+            investDict['备案pdf'] = self.pdfurl.format(sendid=each['SENDID'])
             item['dic']=investDict
             yield item
          

@@ -24,8 +24,8 @@ class MiitSpider(scrapy.Spider):
     filePgCount = {'个人信息':1,'融资租赁':1,'数据':1,'车辆':1}
     allowed_domains = ['www.miit.gov.cn']
     listUrl = 'https://www.miit.gov.cn/api-gateway/jpaas-publish-server/front/page/build/unit'
-    start_urls = ['https://www.miit.gov.cn/zwgk/wjgs/index.html',
-                  'https://www.miit.gov.cn/zwgk/zcjd/index.html',
+    start_urls = [#'https://www.miit.gov.cn/zwgk/wjgs/index.html',
+                  #'https://www.miit.gov.cn/zwgk/zcjd/index.html',
                   'https://www.miit.gov.cn/search-front-server/api/search/info']
     custom_settings = {
         'ITEM_PIPELINES': {'govInvest.pipelines.MiitPipeline': 300},
@@ -37,7 +37,7 @@ class MiitSpider(scrapy.Spider):
             headers = cookieTool.getMpsHeaderWithCookie(self.start_urls[0])
         for url in self.start_urls:
             if url == 'https://www.miit.gov.cn/search-front-server/api/search/info':
-                keyWordList = [r'个人信息',r'融资租赁',r'数据',r'车辆']
+                keyWordList = [u'个人信息',u'融资租赁',u'数据',u'车辆']
                 for word in keyWordList:
                     fullUrl = url+'?'
                     params = self.genParams()
@@ -48,7 +48,7 @@ class MiitSpider(scrapy.Spider):
                     for paramKey in params:
                         fullUrl+='&'+paramKey+'='+params[paramKey]
                     print(fullUrl)
-                    #yield Request(fullUrl,headers=headers, callback=self.parse_fileRepo, cb_kwargs=add_params)
+                    yield Request(fullUrl,headers=headers, callback=self.parse_fileRepo, cb_kwargs=add_params)
             else:
                 print(url)
                 yield Request(url,headers=headers, callback=self.parse)
@@ -119,7 +119,7 @@ class MiitSpider(scrapy.Spider):
             print ('go next '+articleType+' article page ------------------------------'+str(count))
             #time.sleep(5)
             yield scrapy.Request(response.url+'?a='+str(count), callback=self.parse,headers=headers)
-    #等待调试中   
+    #跑文件库   
     def parse_fileRepo(self, response, params):
         global endFlag
         endFlag = '0'
@@ -166,7 +166,7 @@ class MiitSpider(scrapy.Spider):
             add_params['articleType'] = r'政策文件'
             yield scrapy.Request(link, callback=self.get_detail,headers=headers,cb_kwargs=add_params)
           
-        if self.filePgCount[params['q']]<2 or endFlag=='0':
+        if self.filePgCount[params['q']]<2 and endFlag=='0':
             print ('go next '+params['q']+' page ------------------------------'+str(self.filePgCount[params['q']]))
             url = response.url
             print(url)
