@@ -8,7 +8,7 @@ from govInvest.items import GovinvestAnhuiItem
 from datetime import timedelta, datetime
 
 import govInvest.commonTools as commonTool
-#import govInvest.cookieTools as cookieTool
+import govInvest.cookieTools as cookieTool
 
 # reload(sys)
 # sys.setdefaultencoding("utf-8")
@@ -28,10 +28,11 @@ class InvestAnhuiSpider(scrapy.Spider):
     def start_requests(self):
         global headers
         if not headers:
-            #headers = cookieTool.getAHHeaderWithCookie(self.start_urls[0])
             headers = {
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36'
             }
+            #cookie有效期半小时
+            headers = cookieTool.getAHHeaderWithCookie(self.start_urls[0])
         yield Request(self.start_urls[0],headers=headers, callback=self.parse)
               
     def parse(self, response):

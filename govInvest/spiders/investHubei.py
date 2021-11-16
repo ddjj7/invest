@@ -7,7 +7,7 @@ from datetime import timedelta, datetime
 import json
 
 
-#山东
+#湖北
 class InvestHubeiSpider(scrapy.Spider):
     count = 1
     name = 'investHubeiSpider'

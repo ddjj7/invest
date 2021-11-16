@@ -22,7 +22,7 @@ class InvestJiangxiSpider(scrapy.Spider):
     
     def start_requests(self):
         self.initVerifyParam()
-        param = {'page': str(self.count), 'rows': "10", 'type': "0", 'projectName': "", 'projectCode': "-"}
+        param = {'page': str(self.count), 'rows': "10", 'type': "1", 'projectName': "", 'projectCode': "-"}
         posturl = self.api_url.format(sig=self.sig,timestamp=self.timestamp,tkey=self.tkey)
         print(param)
         print(posturl)
@@ -35,8 +35,11 @@ class InvestJiangxiSpider(scrapy.Spider):
         body = json.loads(response.text)
         for each in body['data']:
             each = each['columns']
-            finishDate = each['FINISH_TIME']
+            finishDate = each['APPROVE_DATE']
             projectCode = each['PROJECT_CODE']
+            pstatus = each['PSTATUS']
+            if not pstatus == '99':
+                continue
             recordDate = datetime.strptime(finishDate, "%Y-%m-%d")
             currDate = datetime.strptime(datetime.now().strftime("%Y-%m-%d"), "%Y-%m-%d")
             #print(currDate)
@@ -62,7 +65,7 @@ class InvestJiangxiSpider(scrapy.Spider):
             print ('go next page ------------------------------'+str(self.count))
             posturl = self.api_url.format(sig=self.sig,timestamp=self.timestamp,tkey=self.tkey)
             #self.initVerifyParam()
-            param = {'page': str(self.count), 'rows': "10", 'type': "0", 'projectName': "", 'projectCode': "-"}
+            param = {'page': str(self.count), 'rows': "10", 'type': "1", 'projectName': "", 'projectCode': "-"}
             #time.sleep(5) 
             yield scrapy.FormRequest(posturl, formdata = param, callback=self.parse)#,dont_filter=True
             

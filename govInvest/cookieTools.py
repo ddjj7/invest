@@ -174,7 +174,11 @@ def getShandongCookieParam(url):
             keyIndex = i
     timestamp = str(int(random.random()*9000 + 1000)) + '_' + key + '_' + str(int(time.time())*1000).replace('+','-')
     print(timestamp)
-    
+#     temp = timestamp[0:12]
+#     print(temp)
+#     temp = temp+str(int(time.time())*1000)
+    time.sleep(5)
+    print(timestamp[0:12]+str(int(time.time())*1000))
     
 #     print('s='+sig)
 #     print('t='+timestamp)
