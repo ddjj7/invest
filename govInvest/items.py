@@ -52,6 +52,14 @@ class GovinvestHunanItem(scrapy.Item):
     dic = scrapy.Field()
     pass
 
+class GovinvestHenanItem(scrapy.Item):
+    dic = scrapy.Field()
+    pass
+
+class GovinvestHebeiItem(scrapy.Item):
+    dic = scrapy.Field()
+    pass
+
 class MpsItem(scrapy.Item):
     dic = scrapy.Field()
     pass

@@ -180,6 +180,42 @@ class GovinvestHunanPipeline(object):
         requests.post(posturl, data=data, headers=headers)
         return item
     
+class GovinvestHenanPipeline(object):
+    
+    def process_item(self, item, spider):
+        dic = item['dic']
+        packet = {}
+        packet['data'] = dic
+        packet['province']='河南'
+        packet['dateItem']='审批时间'
+        packet['idItem']='项目代码'
+        packet['companyItem']=''
+        # send to java server
+        #posturl = 'http://10.47.123.120:6666/cdp-mcrsrv-admin/collect/saveCollectInfo'
+        posturl = 'http://127.0.0.1:9090/api/recvScrapy1/'
+        headers = {'Content-Type': 'application/json'}
+        data = json.dumps(packet)
+        requests.post(posturl, data=data, headers=headers)
+        return item
+    
+class GovinvestHebeiPipeline(object):
+    
+    def process_item(self, item, spider):
+        dic = item['dic']
+        packet = {}
+        packet['data'] = dic
+        packet['province']='河北'
+        packet['dateItem']='审批日期'
+        packet['idItem']='项目代码'
+        packet['companyItem']='项目法人单位'
+        # send to java server
+        #posturl = 'http://10.47.123.120:6666/cdp-mcrsrv-admin/collect/saveCollectInfo'
+        posturl = 'http://127.0.0.1:9090/api/recvScrapy1/'
+        headers = {'Content-Type': 'application/json'}
+        data = json.dumps(packet)
+        requests.post(posturl, data=data, headers=headers)
+        return item
+    
 class MpsPipeline(object):
 
     def process_item(self, item, spider):
