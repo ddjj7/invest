@@ -29,6 +29,8 @@ class InvestHunanSpider(scrapy.Spider):
         for each in body['data']['records']:
             item = GovinvestHunanItem()
             investDict = {}
+            if not 'approvalDate' in each.keys():
+                continue
             approvalDate = each['approvalDate']
             recordDate = datetime.strptime(approvalDate, "%Y-%m-%d")
             print(recordDate)
@@ -38,11 +40,11 @@ class InvestHunanSpider(scrapy.Spider):
             #print(yesterday)
             if currDate == recordDate:
                 print('currDate == recordDate')
-                #continue 
+                continue 
             if yesterday > recordDate:
                 print('yesterday > recordDate')
-                #endFlag='1'
-                #continue 
+                endFlag='1'
+                continue 
                 
             pid  = each['id']
             projectName = each['prjName']   #项目名称
@@ -63,9 +65,9 @@ class InvestHunanSpider(scrapy.Spider):
             yield item
             
         self.count +=1     
-        if self.count<3 and endFlag=='0':
+        if self.count<100 and endFlag=='0':
             print ('go next page ------------------------------'+str(self.count))
-            self.packet['page'] = self.count
+            self.packet['pageIndex'] = self.count
             yield JsonRequest(self.start_urls[0], data=self.packet, callback=self.parse)
             
 

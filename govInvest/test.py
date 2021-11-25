@@ -76,9 +76,6 @@ if __name__ == '__main__':
     geturl = 'https://tzxm.zjzwfw.gov.cn/tzxmweb/zwtpages/resultsPublicity/notice_of_publicity_new.html?page=1'
     r = requests.get(geturl,headers=headers, verify=False)
     print(r.status_code)
-#     print(r.text)
-#     with io.open('./zj.txt','a',encoding='utf-8')as f:
-#         f.write(r.text)
     cookiejar = r.cookies
     cookiedict = requests.utils.dict_from_cookiejar(cookiejar)
     print(cookiedict)
@@ -102,9 +99,14 @@ if __name__ == '__main__':
         'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.107 Safari/537.36',
         'x-requested-with': 'XMLHttpRequest'
     }
+    r = requests.get('https://tzxm.zjzwfw.gov.cn/publicannouncement.do?method=publicCheck&t=0.3595959892320596', headers=headers, verify=False)
+    with open('/home/hewei/下载/test.jpg','wb') as f:
+        f.write(r.content)
+    
     r = requests.post(posturl, data=packet, headers=headers, verify=False)#,cookies=cookie_jar, verify=False, allow_redirects=True
     print(r.status_code)
     print(r.text)
+    
     
     
     

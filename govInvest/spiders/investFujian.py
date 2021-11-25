@@ -59,7 +59,7 @@ class InvestFujianSpider(scrapy.Spider):
          
         self.count +=1     
         print ('go next page ------------------------------'+str(self.count))
-        if self.count<3 and endFlag=='0':
+        if self.count<100 and endFlag=='0':
             yield scrapy.FormRequest(self.start_urls[0], formdata = {'page':str(self.count)},headers=self.headers, callback=self.parse)
              
     def get_detail(self,response,applyDate):

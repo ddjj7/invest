@@ -62,7 +62,7 @@ class InvestHenanSpider(scrapy.Spider):
             yield item
             
         self.count +=1     
-        if self.count<3 and endFlag=='0':
+        if self.count<100 and endFlag=='0':
             print ('go next page ------------------------------'+str(self.count))
             nextUrl = self.start_urls[0].format(count=self.count)
             yield Request(nextUrl,headers=self.headers, callback=self.parse)
