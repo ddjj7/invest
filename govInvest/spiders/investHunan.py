@@ -31,8 +31,8 @@ class InvestHunanSpider(scrapy.Spider):
             investDict = {}
             if not 'approvalDate' in each.keys():
                 continue
-            approvalDate = each['approvalDate']
-            recordDate = datetime.strptime(approvalDate, "%Y-%m-%d")
+            createTime = each['createTime']
+            recordDate = datetime.strptime(createTime, "%Y-%m-%d")
             print(recordDate)
             currDate = datetime.strptime(datetime.now().strftime("%Y-%m-%d"), "%Y-%m-%d")
             #print(currDate)
@@ -52,7 +52,9 @@ class InvestHunanSpider(scrapy.Spider):
             approvalNum = each['approvalNum']  #批复文号
             fileGuid = each['fileGuid']  #文件id
             approvalDepartName = each['approvalDepartName']  #审批单位
+            approvalDate = each['approvalDate']  #审批单位
             
+            investDict[u'发布日期'] = createTime   #发布日期
             investDict[u'批复时间'] = approvalDate   #批复时间
             investDict[u'项目名称'] = projectName   #项目名称
             investDict[u'项目代码'] = projectCode   #项目代码
