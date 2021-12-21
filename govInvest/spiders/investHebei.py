@@ -42,11 +42,11 @@ class InvestHebeiSpider(scrapy.Spider):
             #print(yesterday)
             if currDate == recordDate:
                 print('currDate == recordDate')
-                #continue 
+                continue 
             if yesterday > recordDate:
                 print('yesterday > recordDate')
-                #endFlag='1'
-                #continue 
+                endFlag='1'
+                continue 
             #//*[@id="form"]/table/tbody/tr[1]/td[2]/a
             detailInfo = each.xpath("./td[2]/a/@href").extract()[0].strip()
             detail = re.findall(r'javascript:openXmInfo(.*);', detailInfo)[0]
@@ -58,7 +58,7 @@ class InvestHebeiSpider(scrapy.Spider):
          
         self.count +=1     
         print ('go next page ------------------------------'+str(self.count))
-        if self.count<3 and endFlag=='0':
+        if self.count<50 and endFlag=='0':
             self.packet['page'] = str(self.count)
             yield scrapy.FormRequest(self.start_urls[0], formdata = self.packet,headers=self.headers, callback=self.parse)
              
@@ -72,10 +72,16 @@ class InvestHebeiSpider(scrapy.Spider):
         projectName = response.xpath("/html/body/table[2]/tr[1]/td[3]/b/text()").extract()[0].strip()
         projectNameValue = response.xpath("/html/body/table[2]/tr[1]/td[4]/text()").extract()[0].strip()
         
-        projectType = response.xpath("/html/body/table[2]/tr[2]/td[1]/b/text()").extract()[0].strip()
-        projectTypeValue = response.xpath("/html/body/table[2]/tr[2]/td[2]/text()").extract()[0].strip()
-        projectLegelPerson = response.xpath("/html/body/table[2]/tr[2]/td[3]/b/text()").extract()[0].strip()
-        projectLegelPersonValue = response.xpath("/html/body/table[2]/tr[2]/td[4]/text()").extract()[0].strip()
+        projectLegelPersonValue = ''
+        projectTypeValue = ''
+        if commonTool.returnNotNull(response.xpath("/html/body/table[2]/tr[2]/td[1]/b/text()")):
+            projectType = response.xpath("/html/body/table[2]/tr[2]/td[1]/b/text()").extract()[0].strip()
+        if commonTool.returnNotNull(response.xpath("/html/body/table[2]/tr[2]/td[2]/text()")):
+            projectTypeValue = response.xpath("/html/body/table[2]/tr[2]/td[2]/text()").extract()[0].strip()
+        if commonTool.returnNotNull(response.xpath("/html/body/table[2]/tr[2]/td[3]/b/text()")):
+            projectLegelPerson = response.xpath("/html/body/table[2]/tr[2]/td[3]/b/text()").extract()[0].strip()
+        if commonTool.returnNotNull(response.xpath("/html/body/table[2]/tr[2]/td[4]/text()")):
+            c = response.xpath("/html/body/table[2]/tr[2]/td[4]/text()").extract()[0].strip()
         
          
         #//*[@id='itemInfos']/fieldset/table/tbody/tr/th[1]
@@ -94,10 +100,12 @@ class InvestHebeiSpider(scrapy.Spider):
         
         investDict[approveTime] = approveTimeValue  #审批时间
         investDict[projectName] = self.localStrip(projectNameValue)  #项目名称
-        investDict[projectLegelPerson] = self.localStrip(projectLegelPersonValue)  #项目法人单位
+        if projectLegelPersonValue:
+            investDict[projectLegelPerson] = self.localStrip(projectLegelPersonValue)  #项目法人单位
         investDict[approveDepartment] = self.localStrip(approveDepartmentValue)  #审批部门
         investDict[projectCode] = self.localStrip(projectCodeValue)  #项目代码
-        investDict[projectType] = self.localStrip(projectTypeValue)  #项目类型
+        if projectTypeValue:
+            investDict[projectType] = self.localStrip(projectTypeValue)  #项目类型
         investDict[approveMatter] = self.localStrip(approveMatterValue)  #审批事项
         investDict[approveResult] = self.localStrip(approveResultValue)  #审批结果
         investDict[approveNo] = self.localStrip(approveNoValue)  #审批文号

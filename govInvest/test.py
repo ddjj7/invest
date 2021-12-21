@@ -13,6 +13,7 @@ import re
 from datetime import timedelta, datetime
 import govInvest.cookieTools as cookieTool
 from requests.cookies import RequestsCookieJar
+from builtins import str
 
 if __name__ == '__main0__':
 #     print(int(random.random()*9000+1000))
@@ -69,7 +70,7 @@ if __name__ == '__main0__':
     r1 = requests.post(posturl,params=param)
     print(r1.text)
     
-if __name__ == '__main__':
+if __name__ == '__main__1':
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36'
     }
@@ -100,13 +101,18 @@ if __name__ == '__main__':
         'x-requested-with': 'XMLHttpRequest'
     }
     r = requests.get('https://tzxm.zjzwfw.gov.cn/publicannouncement.do?method=publicCheck&t=0.3595959892320596', headers=headers, verify=False)
-    with open('/home/hewei/下载/test.jpg','wb') as f:
+    with open('/home/hewei/下载/test3.jpg','wb') as f:
         f.write(r.content)
     
     r = requests.post(posturl, data=packet, headers=headers, verify=False)#,cookies=cookie_jar, verify=False, allow_redirects=True
     print(r.status_code)
     print(r.text)
     
-    
+if __name__ == '__main__':
+    ss = 'Data=[[1.11],[2.22]]'
+    a = re.findall(r'Data=\[.*?\]', ss)[0]
+    b = re.findall(r'\[(.*?)\]',ss)[0]
+    print(a)
+    print(b)
     
     
