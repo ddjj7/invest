@@ -95,3 +95,4 @@ ITEM_PIPELINES = {
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 
 #FEED_EXPORTERS = {'excel': 'govInvest.my_exporters.ExcelItemExporter'}
+#DOWNLOADER_CLIENT_TLS_METHOD = 'TLSv1.1'

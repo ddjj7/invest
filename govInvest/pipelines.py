@@ -216,6 +216,60 @@ class GovinvestHebeiPipeline(object):
         requests.post(posturl, data=data, headers=headers)
         return item
     
+class GovinvestBeijingPipeline(object):
+    
+    def process_item(self, item, spider):
+        dic = item['dic']
+        packet = {}
+        packet['data'] = dic
+        packet['province']='北京'
+        packet['dateItem']='立项时间'
+        packet['idItem']='项目代码'
+        packet['companyItem']='项目单位'
+        # send to java server
+        #posturl = 'http://10.47.123.120:6666/cdp-mcrsrv-admin/collect/saveCollectInfo'
+        posturl = 'http://127.0.0.1:9090/api/recvScrapy1/'
+        headers = {'Content-Type': 'application/json'}
+        data = json.dumps(packet)
+        requests.post(posturl, data=data, headers=headers)
+        return item
+    
+class GovinvestGuangxiPipeline(object):
+    
+    def process_item(self, item, spider):
+        dic = item['dic']
+        packet = {}
+        packet['data'] = dic
+        packet['province']='广西'
+        packet['dateItem']='备案时间'
+        packet['idItem']='项目代码'
+        packet['companyItem']='法人单位'
+        # send to java server
+        #posturl = 'http://10.47.123.120:6666/cdp-mcrsrv-admin/collect/saveCollectInfo'
+        posturl = 'http://127.0.0.1:9090/api/recvScrapy1/'
+        headers = {'Content-Type': 'application/json'}
+        data = json.dumps(packet)
+        requests.post(posturl, data=data, headers=headers)
+        return item
+    
+class GovinvestShaanxiPipeline(object):
+    
+    def process_item(self, item, spider):
+        dic = item['dic']
+        packet = {}
+        packet['data'] = dic
+        packet['province']='陕西'
+        packet['dateItem']='备案时间'
+        packet['idItem']='项目代码'
+        packet['companyItem']='法人单位'
+        # send to java server
+        #posturl = 'http://10.47.123.120:6666/cdp-mcrsrv-admin/collect/saveCollectInfo'
+        posturl = 'http://127.0.0.1:9090/api/recvScrapy1/'
+        headers = {'Content-Type': 'application/json'}
+        data = json.dumps(packet)
+        requests.post(posturl, data=data, headers=headers)
+        return item
+    
 class MpsPipeline(object):
 
     def process_item(self, item, spider):
