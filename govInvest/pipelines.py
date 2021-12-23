@@ -259,7 +259,7 @@ class GovinvestShaanxiPipeline(object):
         packet = {}
         packet['data'] = dic
         packet['province']='陕西'
-        packet['dateItem']='备案时间'
+        packet['dateItem']='申报时间'
         packet['idItem']='项目代码'
         packet['companyItem']='法人单位'
         # send to java server

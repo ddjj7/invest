@@ -10,7 +10,7 @@ class InvestShaanxiSpider(scrapy.Spider):
     name = 'investShaanxiSpider'
     packet = {}
     allowed_domains = ['tzxm.shaanxi.gov.cn']
-    start_urls = ['https://tzxm.shaanxi.gov.cn/tzxmspweb/api/admin/service/sbsp/apprtprojectinfo/selectApprtProjectInfoByDealState?pageSize=10&pageNo={num}']
+    start_urls = ['https://tzxm.shaanxi.gov.cn/tzxmspweb/api/admin/service/sbsp/apprtprojectinfo/phgsBacx?sort=updateDate&order=desc&pageNo={num}&pageSize=10']
     custom_settings = {
         'ITEM_PIPELINES': {'govInvest.pipelines.GovinvestShaanxiPipeline': 300},
     }
@@ -28,11 +28,10 @@ class InvestShaanxiSpider(scrapy.Spider):
         print ('$$$$$$$$$$$$$$$$$$'+str(self.count)+'$$$$$$$$$$$$$$$$$$')
         body = json.loads(response.text)
         for each in body['data']['objList']:
-            each = each['items'][0]
             #print(each)
             item = GovinvestShaanxiItem()
             investDict = {}
-            applyDate = each['approvalDate']
+            applyDate = each['applyTime']
             print(applyDate)
             tempDate = datetime.strptime(applyDate, "%Y-%m-%d %H:%M:%S")
             recordDate = datetime.strptime(tempDate.strftime("%Y-%m-%d"), "%Y-%m-%d")
@@ -50,25 +49,41 @@ class InvestShaanxiSpider(scrapy.Spider):
                 #continue 
             
             projectName = each['applyProjectName']   #项目名称
-            itemName = each['itemName']   #事项名称
-            #projectUuid = each['projectUuid']   #id
-            dealDeptName = each['dealDeptName']   #审批部门
+            if len(projectName)<5:
+                print(projectName)
+                continue
+            projectLegel = each['projectDept']   #法人单位
+            contactName = each['contact']   #项目法人
             projectCode = each['dealCode']   #项目代码
-            obtainresult = each['obtainresult']   #批复结果
+            addressDetial = each['addressDetial']   #建设地点
+            corType = each['corTypeText']   #申报单位经济类型
+            industryName = each['industryName']   #项目所属行业
+            totalMoney = each['totalMoney']   #项目总投资
+            projectType = each['projectType']   #建设性质
+            projectStarttime = each['projectStarttime']   #计划开工时间
+            state = each['stateTxt']   #审核状态
+            scaleContent = each['scaleContent']   #建设规模及内容
+            
             
             investDict[u'申报时间'] = applyDate   #申报时间
             investDict[u'项目名称'] = projectName   #项目名称
-            investDict[u'事项名称'] = itemName  #事项名称
+            investDict[u'法人单位'] = projectLegel  #法人单位
+            investDict[u'项目法人'] = contactName   #项目法人
             investDict[u'项目代码'] = projectCode   #项目代码
-            investDict[u'审批部门'] = dealDeptName   #审批部门
-            if obtainresult == '1':
-                investDict[u'批复结果'] = u'批复'   #批复结果
-            
+            investDict[u'建设地点'] = addressDetial   #建设地点
+            investDict[u'申报单位经济类型'] = corType   #申报单位经济类型
+            investDict[u'项目所属行业'] = industryName   #项目所属行业
+            if totalMoney:
+                investDict[u'项目总投资'] = str(totalMoney)+u'万'  #项目总投资
+            investDict[u'建设性质'] = projectType   #建设性质
+            investDict[u'计划开工时间'] = projectStarttime   #计划开工时间
+            investDict[u'审核状态'] = state   #审核状态
+            investDict[u'建设规模及内容'] = scaleContent   #建设规模及内容
             item['dic']=investDict
             yield item
             
         self.count +=1     
-        if self.count<4 and endFlag=='0':
+        if self.count<5 and endFlag=='0':
             print ('go next page ------------------------------'+str(self.count))
             nextUrl = self.start_urls[0].format(num=self.count)
             yield scrapy.Request(nextUrl,headers=self.headers, callback=self.parse)
