@@ -9,7 +9,7 @@ class InvestGuangxiSpider(scrapy.Spider):
     name = 'investGuangxiSpider'
     packet = {}
     allowed_domains = ['zxsp.fgw.gxzf.gov.cn']
-    start_urls = ['https://zxsp.fgw.gxzf.gov.cn/listRecordProjectPublicity.jspx?pageNo={num}&projectSearch=']
+    start_urls = ['http://zxsp.fgw.gxzf.gov.cn/listRecordProjectPublicity.jspx?pageNo={num}&projectSearch=']
     custom_settings = {
         'ITEM_PIPELINES': {'govInvest.pipelines.GovinvestGuangxiPipeline': 300},
     }

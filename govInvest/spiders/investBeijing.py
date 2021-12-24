@@ -29,11 +29,12 @@ class InvestBeijingSpider(scrapy.Spider):
     def parse(self, response):
         endFlag='0'
         body = json.loads(response.text)
+        print(response.text)
         for each in body['page']['list']:
             item = GovinvestBeijingItem()
             investDict = {}
-            createTime = each['CREATE_TIME']
-            recordDate = datetime.strptime(createTime, "%Y-%m-%d")
+            applyDate = each['APPROVALDATE']
+            recordDate = datetime.strptime(applyDate, "%Y-%m-%d")
             print(recordDate)
             currDate = datetime.strptime(datetime.now().strftime("%Y-%m-%d"), "%Y-%m-%d")
             yesterday = datetime.strptime((datetime.today()+ timedelta(-1)).strftime("%Y-%m-%d"), "%Y-%m-%d")
@@ -51,7 +52,7 @@ class InvestBeijingSpider(scrapy.Spider):
             consunit = each['CONSUNIT']
             pyType = each['PJTYPE']
             orgName = each['ORGNAME']
-            applyDate = each['APPROVALDATE']
+            createTime = each['CREATE_TIME']
             
             investDict['立项时间'] = applyDate  #立项时间
             investDict['项目名称'] = projectName  #项目名称

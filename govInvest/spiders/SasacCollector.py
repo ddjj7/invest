@@ -8,7 +8,7 @@ from datetime import timedelta, datetime
 count=0
 #网信
 class SasacSpider(scrapy.Spider):
-    name = 'SasacSpider'
+    name = 'sasacSpider'
     allowed_domains = ['http://www.sasac.gov.cn/']
     start_urls = ['http://www.sasac.gov.cn/n2588035/n2641579/n2641645/index.html']
     custom_settings = {
