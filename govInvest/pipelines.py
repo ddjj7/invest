@@ -353,6 +353,21 @@ class SasacPipeline(object):
         requests.post(posturl, data=data, headers=headers)
         return item
     
+class ShcpePipeline(object):
+
+    def process_item(self, item, spider):
+        dic = item['dic']
+        packet = {}
+        packet['data'] = dic
+        packet['source'] = u'上海票据交易所'
+        # send to java server
+        #posturl = 'http://10.47.123.120:6666/cdp-mcrsrv-admin/collect/saveCollectInfo'
+        posturl = 'http://127.0.0.1:9090/api/recvScrapy1/'
+        headers = {'Content-Type': 'application/json'}
+        data = json.dumps(packet)
+        requests.post(posturl, data=data, headers=headers)
+        return item
+    
 class BeikePipeline(object):
     
     def process_item(self, item, spider):

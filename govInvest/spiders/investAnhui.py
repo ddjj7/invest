@@ -32,7 +32,7 @@ class InvestAnhuiSpider(scrapy.Spider):
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36'
             }
             #cookie有效期半小时
-            headers = cookieTool.getAHHeaderWithCookie(self.start_urls[0])
+            #headers = cookieTool.getAHHeaderWithCookie(self.start_urls[0])
         yield Request(self.start_urls[0],headers=headers, callback=self.parse)
               
     def parse(self, response):
@@ -56,11 +56,11 @@ class InvestAnhuiSpider(scrapy.Spider):
             #print(yesterday)
             if currDate == recordDate:
                 print('currDate == recordDate')
-                continue 
+                #continue 
             if yesterday > recordDate:
                 print('yesterday > recordDate')
-                endFlag='1'
-                continue 
+                #endFlag='1'
+                #continue 
             if result !=u'批复':
                 continue
             #time.sleep(5)

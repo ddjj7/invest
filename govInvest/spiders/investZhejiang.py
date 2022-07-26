@@ -105,4 +105,5 @@ class InvestZhejiangSpider(scrapy.Spider):
         self.packet['area_flag']= '1'
         self.packet['deal_code']= ''
         self.packet['item_name']= ''
+#         self.packet['Txtidcode']= ''
     

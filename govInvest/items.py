@@ -92,6 +92,9 @@ class SasacItem(scrapy.Item):
     dic = scrapy.Field()
     pass
 
+class ShcpeItem(scrapy.Item):
+    dic = scrapy.Field()
+    pass
 
 class BeikeItem(scrapy.Item):
     title = scrapy.Field()
