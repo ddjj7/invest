@@ -8,7 +8,8 @@ from govInvest.items import ShcpeItem
 from scrapy.http import JsonRequest
       
 #import time
-from datetime import datetime
+#from datetime import datetime
+from datetime import timedelta, datetime
 
 count=0
 #票据
@@ -42,10 +43,10 @@ class ShcpeSpider(scrapy.Spider):
             print(yesterday)
             if currDate == recordDate:
                 print('currDate == recordDate')
-                continue 
+                #continue 
             if yesterday > recordDate:
                 print('yesterday > recordDate')
-                continue 
+                #continue 
                 
             articleId  = each['articleId']
             payLoad = {'articleId': articleId}
@@ -90,17 +91,20 @@ class ShcpeSpider(scrapy.Spider):
     
     def parseFile(self,file):
         path = os.path.abspath(file)
-        
+        print(path)
         dataList = []
         with pdfplumber.open(path) as pdf:
-            for each in pdf.pages:
-                table = each.extract_table()#提取单个表格
-                count = 0
-                for eachLine in table:
-                    count+=1
-                    if count == 1:
-                        continue
-                    dataList.append(eachLine)
+            for page in pdf.pages:
+                for table in page.extract_tables():
+                    count = 0
+                    try:
+                        for eachLine in table:
+                            count+=1
+                            if count == 1:
+                                continue
+                            dataList.append(eachLine)
+                    except:
+                        print(table)
         
         print(path)
         if os.path.exists(path):
