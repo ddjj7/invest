@@ -63,6 +63,7 @@ class InvestJiangxiSpider(scrapy.Spider):
         self.count +=1     
         if self.count<100 and endFlag=='0':
             print ('go next page ------------------------------'+str(self.count))
+            self.initVerifyParam()
             posturl = self.api_url.format(sig=self.sig,timestamp=self.timestamp,tkey=self.tkey)
             #self.initVerifyParam()
             param = {'page': str(self.count), 'rows': "10", 'type': "1", 'projectName': "", 'projectCode': "-"}

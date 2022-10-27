@@ -56,11 +56,11 @@ class InvestAnhuiSpider(scrapy.Spider):
             #print(yesterday)
             if currDate == recordDate:
                 print('currDate == recordDate')
-                #continue 
+                continue 
             if yesterday > recordDate:
                 print('yesterday > recordDate')
-                #endFlag='1'
-                #continue 
+                endFlag='1'
+                continue 
             if result !=u'批复':
                 continue
             #time.sleep(5)
